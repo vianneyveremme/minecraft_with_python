@@ -1,0 +1,2 @@
+global-include *.txt *.py *.md
+global-exclue __pycache__/ *.egg-info/ *.egg
