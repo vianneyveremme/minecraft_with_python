@@ -1,4 +1,8 @@
-# [Minecraft](https://www.minecraft.net/download)-[Datapacks](https://minecraft.gamepedia.com/Data_Pack)-Generator  
+# [Minecraft](https://www.minecraft.net)-[Datapacks](https://minecraft.gamepedia.com/Data_Pack)-Generator  
+
+## Description:  
+A new way of coding [Minecraft](https://www.minecraft.net).
+[Minecraft](https://www.minecraft.net) is a game that you can play on your computer. It is a popular game for people who are interested in building their own worlds. And since a way to code the game itself has been implemented, I tried it. But it was not simple. So I decided to make a generator for the [Minecraft](https://www.minecraft.net) [Datapacks](https://minecraft.gamepedia.com/Data_Pack), so people can make their own [Datapacks](https://minecraft.gamepedia.com/Data_Pack) easily, even though they still need to know Python until I can make it look like [Scratch](https:/scratch.mit.edu) or something this easy.
 
 ## Installation:  
 * First of all make sure you have one of the latest [Python](https://www.python.org/downloads/) version installed on your computer.  
@@ -17,13 +21,15 @@ from mcwpy import *
 * Type `/reload` to load the datapack.  
 * Have fun playing with your brand new handmade datapack!  
 
-
-## Example:  
+### Example:  
 ```python
 from mcwpy import *
 
-
-# Since this is still in development, this should only print "test".
-my_datapack = Datapack("My Datapack")
-print('This example still needs to be created')
+# Since this is still in development, this should only print "Hello from the MCWPy community :)".
 ```  
+
+## Contributing:
+If you want to contribute to this project, you can do so by forking it and sending a pull request, I am opened to any idea and contribution.
+
+## Credits:
+Thanks to [@theskyblockman](https://github.com/theskyblockman) for the idea of using workspaces.

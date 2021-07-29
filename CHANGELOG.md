@@ -1,5 +1,5 @@
 # 0.0.7 ()
-- ...
+- Improved the `README.md`.
 
 # 0.0.6 (2021/07/29)
 - Fixed version **0.0.5** by using relative imports.  
