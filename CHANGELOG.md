@@ -1,5 +1,5 @@
-# 0.0.8 (2021/07/30)
-- Test to fix library import issues.  
+# 0.0.10 (2021/07/30)
+- Fixed library import issues - `datapack.py` was not importing `workspace.py` with relative imports.  
 
 # 0.0.7 (2021/07/30)
 - Added `requests==2.26.0` to `REQUIREMENTS.txt`.  

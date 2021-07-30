@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import date
 from time import time
-from workspace import Workspace
+from .workspace import Workspace
 import os
 
 
