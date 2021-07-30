@@ -20,19 +20,19 @@ classifiers = [
 ]
 
 setup(
-    name='mcwpy',
-    version=__version__,
-    description='A new way to create Minecraft datapacks',
-    py_modules=['ansi_escape_sequences', 'datapack', 'datapack', 'test'],
-    long_description=open('README.md').read() + '\n\n' + open('CHANGELOG.md').read(),
-    long_description_content_type='text/markdown',
     author='Vianpyro',
     author_email='vianney.veremme@gmail.com',
-    url='https://github.com/vianneyveremme/minecraft_with_python',
-    license='MIT',
-    keywords=['Minecraft', 'Datapack', 'Function', 'MCFunction'],
     classifiers=classifiers,
-    packages=find_packages(exclude=['tests']),
+    description='A new way to create Minecraft datapacks',
     install_requires=open('REQUIREMENTS.txt').read(),
+    keywords=['Minecraft', 'Datapack', 'Function', 'MCFunction'],
+    license='MIT',
+    long_description=open('README.md').read() + '\n\n' + open('CHANGELOG.md').read(),
+    long_description_content_type='text/markdown',
+    name='mcwpy',
+    packages=find_packages(exclude=['tests']),
+    py_modules=['ansi_escape_sequences', 'datapack', 'datapack', 'test'],
+    url='https://github.com/vianneyveremme/minecraft_with_python',
+    version=__version__,
     zip_safe=False
 )
