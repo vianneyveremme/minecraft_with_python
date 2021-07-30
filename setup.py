@@ -6,6 +6,7 @@
 from setuptools import setup, find_packages
 from _version import __version__
 
+
 classifiers = [
     'Development Status :: 1 - Planning',
     'Intended Audience :: Customer Service',
@@ -31,6 +32,7 @@ setup(
     long_description_content_type='text/markdown',
     name='mcwpy',
     packages=find_packages(exclude=['tests']),
+    package_dir={'': 'source'},
     py_modules=['ansi_escape_sequences', 'datapack', 'datapack', 'test'],
     url='https://github.com/vianneyveremme/minecraft_with_python',
     version=__version__,

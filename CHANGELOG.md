@@ -1,3 +1,6 @@
+# 0.0.8 (2021/07/30)
+- Test to fix library import issues.  
+
 # 0.0.7 (2021/07/30)
 - Added `requests==2.26.0` to `REQUIREMENTS.txt`.  
 - Added `tests.py` in which unit tests are and will be written.  
