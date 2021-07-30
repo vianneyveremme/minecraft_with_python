@@ -1,5 +1,11 @@
-# 0.0.7 ()
-- Improved the `README.md`.
+# 0.0.7 (2021/07/30)
+- Added `requests==2.26.0` to `REQUIREMENTS.txt`.  
+- Added `tests.py` in which unit tests are and will be written.  
+- Added `workspace.py` to create the class `Workspace` which handles the `Datapack` workspaces.  
+- Improved the `README.md`.  
+- Improved the `Datapack`'s `workspaces` default attribute.  
+- Removed `test.py`.  
+- Wrote several tests for the `Datapack` class (`datapack.py`).  
 
 # 0.0.6 (2021/07/29)
 - Fixed version **0.0.5** by using relative imports.  

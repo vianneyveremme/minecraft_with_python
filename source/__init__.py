@@ -6,7 +6,7 @@ MCWPy is a Python library for creating Minecraft datapacks using Python.
 """
 from .ansi_escape_sequences import Font
 from .datapack import Datapack
-from .test import *
+from .workspace import Workspace
 import sys
 
 
