@@ -106,13 +106,3 @@ class Datapack_Iterator:
             self._index += 1
             return result
         raise StopIteration
-
-
-if __name__ == '__main__':
-    """
-    This part is just for testing purposes.
-    """
-    dp = Datapack(workspaces=[Workspace(name='string0'), Workspace(name='string1')])
-    for e in dp:
-        print(e.name)
-    print(dp)

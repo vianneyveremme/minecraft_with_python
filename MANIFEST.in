@@ -1,2 +1,2 @@
 global-include *.txt *.py *.md
-global-exclue __pycache__/ *.egg-info/ *.egg
+global-exclue __pycache__/ tests/ *.egg-info/ *.egg

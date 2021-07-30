@@ -41,11 +41,13 @@ else:
 del date
 
 # Verify that the CHANGELOG lines start with a hyphen and end with a period and a double space.
-lines = [line for line in open('CHANGELOG.md').readlines() if (line.startswith('-') or not line.startswith('#')) and not line.endswith('.  \n') and not line == '\n']
+lines = [line for line in open('CHANGELOG.md').readlines() if not line.startswith('#') and not line.endswith('.  \n') and not line == '\n']
 if len(lines) == 0:
-    print(f'{Font.OKGREEN}All lines in CHANGELOG.md seem to start with a hyphen and end with a period and a double space.{Font.ENDC}')
+    print(f'{Font.OKGREEN}All lines in CHANGELOG.md seem correct.{Font.ENDC}')
 else:
     print(f'{Font.FAIL}{len(lines)} {"line" if len(lines) < 2 else "lines"} should start with a hyphen and end with a period and a double space: {lines}.{Font.ENDC}')
     quit()
 
+# Print warning every import between modules should be relative import
+print(f'{Font.WARNING}All imports between modules should be relative imports.{Font.ENDC}')
 print(f'{Font.OKGREEN}\n>>> Setup check passed successfuly. <<<{Font.ENDC}')
