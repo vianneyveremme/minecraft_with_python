@@ -1,5 +1,8 @@
-# 0.0.12 (2021/07/30)
+# 0.0.12 (2021/07/31)
++ Added `utility.py` to the library for tools that can be useful for other modules.  
 + Made the Datapack compilation delete the old Datapack folder if authorized.  
++ Made the library inform the user where the Datapack folder by default is.  
+* Changed `ansi_escape_sequence.py` into `utility.py`.  
 
 # 0.0.11 (2021/07/30)
 + Added many more tests to `datapack.py`.  

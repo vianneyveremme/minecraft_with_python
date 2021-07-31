@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 from datetime import date
+from genericpath import exists
+from PIL import Image
 from time import time
+from zipfile import ZipFile
 from .workspace import Workspace
+from .utility import create_file, make_directory
 import os
 import shutil
 
 
 class Datapack:
+    # TODO: make it printable with __format__
     """
     Datapacks can be placed in the .minecraft/saves/(world)/datapacks folder of a world. Each data pack is either a sub-folder or a .zip file \
         within the datapacks folder. After it is in the folder, a data pack is enabled for that world when the world is reloaded or loaded.
@@ -45,7 +50,7 @@ class Datapack:
         :return: None; this is a constructor.
         """
         self.title = title if title not in [None, ''] else "My_Amazing_Datapack"
-        self.path = path if path is not None else os.getcwd()
+        self.path = (path if path[-len(os.path.sep)] != os.path.sep else path[:-len(os.path.sep)]) if path is not None else os.getcwd()
         self.author = author if author is not None else "MCWPy"
         self.pack_mcmeta = pack_mcmeta if pack_mcmeta is not None else {}
         self.workspaces = (workspaces if isinstance(workspaces, list) else [workspaces]) if workspaces is not None else []
@@ -56,13 +61,7 @@ class Datapack:
         self.version = version if version is not None else f'{str(date.today().isocalendar()[0])[-2:]}w{date.today().isocalendar()[1]}s{int(time())}'
 
         # Verifies that the path is a valid datapack path
-        self._exists = os.path.exists(self.path + self.title)
-
-        if self._exists and not self.replace_existing:
-            self.replace_existing = input(f'{self.title} already exists, do you want to replace it? [yes/no]: ')[0].lower() == 'y'
-
-            if not self.replace_existing:
-                raise FileExistsError(f'The datapack "{self.title}" already exists. Please specify a new name or set the "replace_existing" parameter to True.')
+        self._exists = os.path.exists(self.path + os.path.sep + self.title)
 
         # Verifies that the workspaces are valid.
         if not all(isinstance(w, Workspace) for w in self.workspaces):
@@ -115,15 +114,6 @@ class Datapack:
             for e in element:
                 self.append(e)
 
-    def pop(self, index: int=-1) -> Workspace:
-        """
-        Remove and return the Workspace at the given index.
-
-        :param index: The index of the Workspace to remove.
-        :return: The Workspace removed.
-        """
-        return self.workspaces.pop(index)
-
     def compile(self) -> None:
         """
         Compiles the data entered by the user to create a Minecraft Datapack.
@@ -133,8 +123,65 @@ class Datapack:
         if self._exists:
             if self.replace_existing:
                 shutil.rmtree(self.path + os.path.sep + self.title)
+            elif input(f'{self.title} already exists, do you want to replace it? [yes/no]: ')[0].lower() == 'y':
+                shutil.rmtree(self.path + os.path.sep + self.title)
             else:
                 raise FileExistsError(f'The datapack "{self.title}" already exists. Please specify a new name or set the "replace_existing" parameter to True.')
+
+        # Create the Datapack directory and its data directory
+        make_directory(self.title, self.path)
+        make_directory('data', self.path + os.path.sep + self.title)
+        
+        # Create the pack.mcmeta file
+        create_file('pack.mcmeta', self.path + os.path.sep + self.title, self.pack_mcmeta)
+
+        # Create the pack.png image
+        colors_list = [ord(c) % 255 for c in self.title]
+        cl_len = len(colors_list)
+        cl_div = sum([int(v) for v in f'{cl_len:b}'])
+        img = Image.new(mode='RGB', size=(128, 128), color=(0, 0, 0))
+        img.putdata([(colors_list[(i // cl_div) % cl_len], colors_list[((i // cl_div) + 1) % cl_len], colors_list[((i // cl_div) + 2) % cl_len]) for i in range (128 * 128)])
+        img.save(f'{self.path}{os.path.sep}{self.title}{os.path.sep}pack.png')
+
+        ########################
+        # AT THE END
+        ########################
+        if self.compile_as_zip:
+            self.to_zip()
+
+    def pop(self, index: int=-1) -> Workspace:
+        """
+        Remove and return the Workspace at the given index.
+
+        :param index: The index of the Workspace to remove.
+        :return: The Workspace removed.
+        """
+        return self.workspaces.pop(index)
+
+    def to_zip(self) -> None:
+        """This function compresses the Datapack into a zip file."""
+        def include_subfolder(directory) -> None:
+            for folder_name, subfolders, file_names in os.walk(directory):
+                for subfolder in subfolders:
+                    include_subfolder(subfolder)
+                for filename in file_names:
+                    file_path = os.path.join(folder_name, filename)
+                    zipObj.write(file_path, os.path.basename(file_path))
+
+        with ZipFile(f"{self.path}{os.path.sep}{self.title}.zip", 'w') as zipObj:
+            for folder_name, subfolders, file_names in os.walk(self.path + os.path.sep + self.title):
+                for subfolder in subfolders:
+                    include_subfolder(subfolder)
+                for filename in file_names:
+                    file_path = os.path.join(folder_name, filename)
+                    zipObj.write(file_path, os.path.basename(file_path))
+            print(f'{self.title}.zip created.')
+
+        # Remove the original files
+        if os.path.exists(self.path + os.path.sep + self.title):
+            shutil.rmtree(self.path + os.path.sep + self.title)
+            print(f'{self.title} folder removed.')
+
 
 class Datapack_Iterator:
     """Iterator class for Datapack"""
