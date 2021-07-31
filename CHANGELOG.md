@@ -1,8 +1,11 @@
+# 0.0.12 (2021/07/30)
++ Made the Datapack compilation delete the old Datapack folder if authorized.  
+
 # 0.0.11 (2021/07/30)
 + Added many more tests to `datapack.py`.  
 + Made Datapacks iterable by going through their Workspaces.  
-* Updated `CHANGELOG.md` way of displaying additions *(`+`)*, changes *(`*`)* and removals *(`-`)*.
-* Updated the way to do the tests.
+* Updated `CHANGELOG.md` way of displaying additions *(`+`)*, changes *(`*`)* and removals *(`-`)*.  
+* Updated the way to do the tests.  
 
 # 0.0.10 [0.0.9, 0.0.8] (2021/07/30)
 * Fixed library import issues - `datapack.py` was not importing `workspace.py` with relative imports.  

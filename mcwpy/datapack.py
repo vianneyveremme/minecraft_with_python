@@ -3,6 +3,7 @@ from datetime import date
 from time import time
 from .workspace import Workspace
 import os
+import shutil
 
 
 class Datapack:
@@ -74,8 +75,9 @@ class Datapack:
     def __getitem__(self, index: int) -> Workspace:
         """
         Select the workspace at the given index.
-        
+
         :param index: The index of the workspace to select.
+        :return: The selected workspace.
         """
         return self.workspaces[index]
 
@@ -104,7 +106,7 @@ class Datapack:
     def append(self, element: object) -> None:
         """
         Add a Workspace or a list of Workpaces to the Datapack.
-        
+
         :param element: The Workspace or the list of Workspaces to add to the Datapack.
         """
         if isinstance(element, Workspace):
@@ -116,14 +118,23 @@ class Datapack:
     def pop(self, index: int=-1) -> Workspace:
         """
         Remove and return the Workspace at the given index.
-        
+
         :param index: The index of the Workspace to remove.
+        :return: The Workspace removed.
         """
         return self.workspaces.pop(index)
 
     def compile(self) -> None:
-        pass
-            
+        """
+        Compiles the data entered by the user to create a Minecraft Datapack.
+
+        :return: None; this is a builder function (builds files).
+        """
+        if self._exists:
+            if self.replace_existing:
+                shutil.rmtree(self.path + os.path.sep + self.title)
+            else:
+                raise FileExistsError(f'The datapack "{self.title}" already exists. Please specify a new name or set the "replace_existing" parameter to True.')
 
 class Datapack_Iterator:
     """Iterator class for Datapack"""

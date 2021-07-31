@@ -2,6 +2,7 @@
 import minecraft_with_python.mcwpy.datapack as mcwpy
 import os
 import unittest
+import shutil
 
 
 class TestDatapack(unittest.TestCase):
@@ -9,6 +10,9 @@ class TestDatapack(unittest.TestCase):
         super().__init__(methodName=methodName)
         self.example_workspace = mcwpy.Datapack(workspaces=[mcwpy.Workspace(name='string'), mcwpy.Workspace(name='string')])
 
+    ##############################
+    # Datapack attributes
+    ##############################
     def test_datapack_default_values(self):
         self.assertEqual(mcwpy.Datapack().title, 'My_Amazing_Datapack')
         self.assertEqual(mcwpy.Datapack().path, os.getcwd())
@@ -53,7 +57,9 @@ class TestDatapack(unittest.TestCase):
             mcwpy.Datapack(workspaces=[dict()])
             mcwpy.Datapack(workspaces=['string'])
 
-
+    ##############################
+    # Datapack methods
+    ##############################
     def test_datapack___str__(self):
         self.assertEqual(
             str(mcwpy.Datapack()),
