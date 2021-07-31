@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from datetime import date
 from time import time
-from workspace import Workspace
+from .workspace import Workspace
 import os
+import shutil
 
 
 class Datapack:
@@ -71,22 +72,69 @@ class Datapack:
         if self.auto_compile:
             self.compile()
 
+    def __getitem__(self, index: int) -> Workspace:
+        """
+        Select the workspace at the given index.
 
-    def compile(self) -> None:
-        pass                
-
-    def __str__(self) -> str:
-        ws_sep = ', \n\t\t'
-        return f"---- {self.title}\n\t|\n\t---- pack.mcmeta: {self.pack_mcmeta}\n\t---- pack.png\n\t---- data\n\t\t|\n\t\t{ws_sep.join(map(lambda x: f'---- {x.name}', self.workspaces))}"
-
-    def __repr__(self) -> str:
-        return self.__str__()
+        :param index: The index of the workspace to select.
+        :return: The selected workspace.
+        """
+        return self.workspaces[index]
 
     def __iter__(self) -> iter:
+        """Return an iterator over the workspaces in the Datapack."""
         return Datapack_Iterator(self.workspaces)
 
     def __len__(self) -> int:
+        """Return the number of workspaces in the Datapack."""
         return len(self.workspaces)
+
+    def __repr__(self) -> str:
+        """Return a string representation of the Datapack."""
+        return self.__str__()
+
+    def __reversed__(self) -> None:
+        """Return an iterator over the workspaces in the Datapack in reverse order."""
+        return Datapack_Iterator(self.workspaces)[::-1]
+
+    def __str__(self) -> str:
+        """Return a string representation of the Datapack."""
+        return "---- {}\n\t|\n\t---- pack.mcmeta: {}\n\t---- pack.png\n\t---- data\n\t\t|\n\t\t{}".format(
+            self.title, self.pack_mcmeta, ', \n\t\t'.join(map(lambda x: f'---- {x.name}', self.workspaces))
+        )
+
+    def append(self, element: object) -> None:
+        """
+        Add a Workspace or a list of Workpaces to the Datapack.
+
+        :param element: The Workspace or the list of Workspaces to add to the Datapack.
+        """
+        if isinstance(element, Workspace):
+            self.workspaces.append(element)
+        elif isinstance(element, list):
+            for e in element:
+                self.append(e)
+
+    def pop(self, index: int=-1) -> Workspace:
+        """
+        Remove and return the Workspace at the given index.
+
+        :param index: The index of the Workspace to remove.
+        :return: The Workspace removed.
+        """
+        return self.workspaces.pop(index)
+
+    def compile(self) -> None:
+        """
+        Compiles the data entered by the user to create a Minecraft Datapack.
+
+        :return: None; this is a builder function (builds files).
+        """
+        if self._exists:
+            if self.replace_existing:
+                shutil.rmtree(self.path + os.path.sep + self.title)
+            else:
+                raise FileExistsError(f'The datapack "{self.title}" already exists. Please specify a new name or set the "replace_existing" parameter to True.')
 
 class Datapack_Iterator:
     """Iterator class for Datapack"""
@@ -106,13 +154,3 @@ class Datapack_Iterator:
             self._index += 1
             return result
         raise StopIteration
-
-
-if __name__ == '__main__':
-    """
-    This part is just for testing purposes.
-    """
-    dp = Datapack(workspaces=[Workspace(name='string0'), Workspace(name='string1')])
-    for e in dp:
-        print(e.name)
-    print(dp)
