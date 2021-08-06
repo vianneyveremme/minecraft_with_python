@@ -1,8 +1,17 @@
-# 0.0.12 (2021/07/31)
+# 0.0.12 ()
++ Added a check to verify whether the Minecraft Workspace can be automatically created.  
++ Added a function to remove directories.  
 + Added `utility.py` to the library for tools that can be useful for other modules.  
++ Added `__format__` representation for Datapack objects.  
 + Made the Datapack compilation delete the old Datapack folder if authorized.  
 + Made the library inform the user where the Datapack folder by default is.  
 * Changed `ansi_escape_sequence.py` into `utility.py`.  
+* Changed code encryption from `utf-8` to `ascii`.  
+* Changed the way the Datapack folder is ziped.  
+* Changed replacement of older versions of the Datapack folder.  
+* Changed the Font class to a dataclass.  
+* Updated the `.gitignore` file to ignore the generated test files.  
+- Removed unused import in `datapack.py`.  
 
 # 0.0.11 (2021/07/30)
 + Added many more tests to `datapack.py`.  

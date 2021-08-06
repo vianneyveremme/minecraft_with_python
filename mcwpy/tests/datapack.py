@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: ascii -*-
 import minecraft_with_python.mcwpy.datapack as mcwpy
 import os
 import unittest

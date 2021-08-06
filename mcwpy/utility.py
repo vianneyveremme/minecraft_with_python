@@ -1,17 +1,21 @@
+# -*- coding: ascii -*-
+from dataclasses import dataclass
 import json
 import os
+import shutil
 
 
+@dataclass
 class Font:
     BOLD = '\033[1m'
     END = '\033[0m'
-    FAIL = KO_RED = '\033[91m'
-    FINAL_INFO_BLUE = '\033[94m'
+    ERROR = '\033[91m'
+    FINAL_INFO = '\033[94m'
     HEADER = '\033[95m'
-    INFO_CYAN = '\033[96m'
     OK_GREEN = '\033[92m'
     UNDERLINE = '\033[4m'
-    WARNING = '\033[93m'
+    VARIABLE_INFO = '\033[96m'
+    WARN = '\033[93m'
 
 
 def create_file(name, path: str='', content: object='') -> None:
@@ -29,11 +33,10 @@ def create_file(name, path: str='', content: object='') -> None:
             for line in content:
                 f.write(f'{line}\n')
         elif isinstance(content, dict):
-            for line in str(content).replace("'", '"').lower():
-                f.write(f'{line}')
+            json.dumps(content, indent=4, sort_keys=True)
         else:
             raise TypeError(f'Argument "content" must be of type "str" or "list" not {type(content)}!')
-        print(f'Successfuly created the file "{name}".')
+        print(f'{Font.OK_GREEN}Successfuly created the file "{name}".{Font.END}')
 
 def make_directory(name: str, path: str='') -> None:
     """
@@ -42,5 +45,15 @@ def make_directory(name: str, path: str='') -> None:
     :param name: Name of the directory to create.
     :param path: Path to the directory to create.
     """
-    os.mkdir(f'{path}{os.path.sep}{name}')
-    print(f'Successfuly created the directory "{name}".')
+    os.mkdir(os.path.join(path, name))
+    print(f'{Font.OK_GREEN}Successfuly created the directory "{name}".{Font.END}')
+
+def remove_directory(name: str, path: str='') -> None:
+    if os.path.exists(f'{os.path.join(path, name)}'):
+        try:
+            shutil.rmtree(os.path.join(path, name))
+            print(f'{Font.FINAL_INFO}Successfuly removed the directory "{name}".{Font.END}')
+        except OSError:
+            print(f'{Font.ERROR}Could not remove the directory "{name}".{Font.END}')
+    else:
+        print(f'{Font.WARN}Directory "{name}" does not exist!{Font.END}')

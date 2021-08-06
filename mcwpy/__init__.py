@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: ascii -*-
 """ MCWPy - Minecraft With Python
 
 MCWPy is a Python library for creating Minecraft datapacks using Python.
@@ -12,9 +12,9 @@ import sys
 
 # Checking Python version (should be above 3.9.5)
 if sys.version_info < (3, 9, 5):
-    print(f"{Font.WARNING}For optimal results it is recommended to use Python 3.9.5 or above.{Font.END}")
+    print(f"{Font.WARN}For optimal results it is recommended to use Python 3.9.5 or above.{Font.END}")
 else:
     print(f"{Font.HEADER}{Font.BOLD}Hello from the MCWPy community :){Font.END}")
 
 # Print the location where the default path is
-print(f"{Font.INFO_CYAN}Default path: {Datapack().path}.{Font.END}")
+print(f"{Font.VARIABLE_INFO}Default path: {Datapack().path}.{Font.END}")
