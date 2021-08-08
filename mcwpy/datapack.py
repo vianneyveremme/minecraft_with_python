@@ -3,7 +3,7 @@ from datetime import date
 from PIL import Image
 from time import time
 from .workspace import Workspace
-from .utility import create_file, make_directory, Font, remove_directory
+from .utility import create_file, Font, make_directory, remove_directory
 import os
 import shutil
 

@@ -1,3 +1,6 @@
+# 0.1.0 (2021/08/08)
++ Added sub-workspaces.  
+
 # 0.0.13 (2021/08/06)
 + Added a check to verify whether the Minecraft Workspace can be automatically created.  
 + Added a function to remove directories.  

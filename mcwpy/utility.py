@@ -36,7 +36,8 @@ def create_file(name, path: str='', content: object='') -> None:
             json.dumps(content, indent=4, sort_keys=True)
         else:
             raise TypeError(f'Argument "content" must be of type "str" or "list" not {type(content)}!')
-        print(f'{Font.OK_GREEN}Successfuly created the file "{name}".{Font.END}')
+        directory_name = f'{path[len(os.getcwd()) + 1:]}{os.path.sep}{Font.END}{name}{Font.OK_GREEN}'
+        print(f'{Font.OK_GREEN}Successfuly created the file "{directory_name}".{Font.END}')
 
 def make_directory(name: str, path: str='') -> None:
     """
@@ -46,14 +47,16 @@ def make_directory(name: str, path: str='') -> None:
     :param path: Path to the directory to create.
     """
     os.mkdir(os.path.join(path, name))
-    print(f'{Font.OK_GREEN}Successfuly created the directory "{name}".{Font.END}')
+    directory_name = f'{path[len(os.getcwd()) + 1:]}{os.path.sep}{Font.END}{name}{Font.OK_GREEN}'
+    print(f'{Font.OK_GREEN}Successfuly created the directory "{directory_name}".{Font.END}')
 
 def remove_directory(name: str, path: str='') -> None:
+    directory_name = f'{path[len(os.getcwd()) + 1:]}{os.path.sep}{Font.END}{name}{Font.OK_GREEN}'
     if os.path.exists(f'{os.path.join(path, name)}'):
         try:
             shutil.rmtree(os.path.join(path, name))
-            print(f'{Font.FINAL_INFO}Successfuly removed the directory "{name}".{Font.END}')
+            print(f'{Font.FINAL_INFO}Successfuly removed the directory "{directory_name}{Font.FINAL_INFO}".')
         except OSError:
-            print(f'{Font.ERROR}Could not remove the directory "{name}".{Font.END}')
+            print(f'{Font.ERROR}Could not remove the directory "{directory_name}".{Font.END}".{Font.END}')
     else:
-        print(f'{Font.WARN}Directory "{name}" does not exist!{Font.END}')
+        print(f'{Font.WARN}Directory "{directory_name}".{Font.END}" does not exist!{Font.END}')
