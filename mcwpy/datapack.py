@@ -1,7 +1,9 @@
-# -*- coding: utf-8 -*-
+# -*- coding: ascii -*-
 from datetime import date
+from PIL import Image
 from time import time
 from .workspace import Workspace
+from .utility import create_file, Font, make_directory, remove_directory
 import os
 import shutil
 
@@ -45,7 +47,7 @@ class Datapack:
         :return: None; this is a constructor.
         """
         self.title = title if title not in [None, ''] else "My_Amazing_Datapack"
-        self.path = path if path is not None else os.getcwd()
+        self.path = (path if path[-len(os.path.sep)] != os.path.sep else path[:-len(os.path.sep)]) if path is not None else os.getcwd()
         self.author = author if author is not None else "MCWPy"
         self.pack_mcmeta = pack_mcmeta if pack_mcmeta is not None else {}
         self.workspaces = (workspaces if isinstance(workspaces, list) else [workspaces]) if workspaces is not None else []
@@ -55,22 +57,22 @@ class Datapack:
         self.description = description if description is not None else ""
         self.version = version if version is not None else f'{str(date.today().isocalendar()[0])[-2:]}w{date.today().isocalendar()[1]}s{int(time())}'
 
-        # Verifies that the path is a valid datapack path
-        self._exists = os.path.exists(self.path + self.title)
-
-        if self._exists and not self.replace_existing:
-            self.replace_existing = input(f'{self.title} already exists, do you want to replace it? [yes/no]: ')[0].lower() == 'y'
-
-            if not self.replace_existing:
-                raise FileExistsError(f'The datapack "{self.title}" already exists. Please specify a new name or set the "replace_existing" parameter to True.')
-
         # Verifies that the workspaces are valid.
         if not all(isinstance(w, Workspace) for w in self.workspaces):
-            raise TypeError(f'The "workspaces" parameter must be a list of Workspace objects.')
+            raise TypeError(f'{Font.ERROR}The "workspaces" parameter must be a list of Workspace objects.{Font.END}')
 
         # Auto-compile?
         if self.auto_compile:
             self.compile()
+            
+    def __format__(self, format_specifier: str=None) -> str:
+        """
+        Formats the Datapack in a human-readable format depending on the format specifier.
+        
+        :param format_specifier: The format specifier.
+        :return: The formatted string.
+        """
+        return f"{self.__str__():{format_specifier}}"
 
     def __getitem__(self, index: int) -> Workspace:
         """
@@ -115,6 +117,51 @@ class Datapack:
             for e in element:
                 self.append(e)
 
+    def compile(self) -> None:
+        """
+        Compiles the data entered by the user to create a Minecraft Datapack.
+
+        :return: None; this is a builder function (builds files).
+        """
+        if os.path.exists(os.path.join(self.path, self.title)):
+            if self.replace_existing or input(f'{Font.WARN}{self.title} already exists, do you want to replace it? [yes/no]: {Font.END}')[0].lower() == 'y':
+                remove_directory(self.title, self.path)
+            else:
+                raise FileExistsError(f'{Font.ERROR}{self.title} already exists, and you have not chosen to replace it.{Font.END}')
+
+        # Create the Datapack directory and its data directory.
+        make_directory(self.title, self.path)
+        make_directory('data', os.path.join(self.path, self.title))
+        
+        # Create the pack.mcmeta file.
+        create_file('pack.mcmeta', os.path.join(self.path, self.title), self.pack_mcmeta)
+
+        # Create the pack.png image.
+        colors_list = [ord(c) % 255 for c in self.title]
+        cl_len = len(colors_list)
+        cl_div = sum([int(v) for v in f'{cl_len:b}'])
+        img = Image.new(mode='RGB', size=(128, 128), color=(0, 0, 0))
+        img.putdata([(colors_list[(i // cl_div) % cl_len], colors_list[((i // cl_div) + 1) % cl_len], colors_list[((i // cl_div) + 2) % cl_len]) for i in range (128 * 128)])
+        img.save(os.path.join(self.path, self.title, 'pack.png'))
+
+        # Compile every workspace in the Datapack.
+        is_minecraft_workspace_defined = False
+        for w in self.workspaces:
+            w.compile(os.path.join(self.path, self.title, 'data'))
+            if w.name == 'minecraft':
+                is_minecraft_workspace_defined = True
+
+        ########################
+        # AT THE END
+        ########################
+        # Add the minecraft Workspace to the Datapack.
+        if not is_minecraft_workspace_defined:
+            Workspace(name='minecraft').compile(os.path.join(self.path, self.title, 'data'))
+
+        # Zip the Datapack.
+        if self.compile_as_zip:
+            self.to_zip()
+
     def pop(self, index: int=-1) -> Workspace:
         """
         Remove and return the Workspace at the given index.
@@ -124,17 +171,28 @@ class Datapack:
         """
         return self.workspaces.pop(index)
 
-    def compile(self) -> None:
-        """
-        Compiles the data entered by the user to create a Minecraft Datapack.
-
-        :return: None; this is a builder function (builds files).
-        """
-        if self._exists:
-            if self.replace_existing:
-                shutil.rmtree(self.path + os.path.sep + self.title)
+    def to_zip(self) -> None:
+        """This function compresses the Datapack into a zip file."""
+        if os.path.exists(os.path.join(self.path, self.title + '.zip')):
+            if self.replace_existing or input(f'{Font.WARN}{self.title}.zip already exists, do you want to replace it? [yes/no]: {Font.END}')[0].lower() == 'y':
+                os.remove(os.path.join(self.path, self.title + '.zip'))
             else:
-                raise FileExistsError(f'The datapack "{self.title}" already exists. Please specify a new name or set the "replace_existing" parameter to True.')
+                raise FileExistsError(f'{Font.ERROR}{self.title}.zip already exists, and you have not chosen to replace it.{Font.END}')
+
+        # Actually create the zip file.
+        shutil.make_archive(self.title, 'zip', os.path.join(self.path, self.title))
+        
+        if os.path.exists(os.path.join(self.path, self.title + '.zip')):
+            print(f'{Font.OK_GREEN}Successfuly created the archive "{self.title}.zip".{Font.END}')
+
+            # Remove the original files
+            if os.path.exists(os.path.join(self.path, self.title)):
+                remove_directory(self.title, self.path)
+        else:
+            # Print an error message and say the original file was saved.
+            print(f'{Font.ERROR}Failed to create the file "{self.title}.zip".{Font.END}', f'{Font.FINAL_INFO}The file {self.title} was not deleted.{Font.END}')
+
+
 
 class Datapack_Iterator:
     """Iterator class for Datapack"""

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: ascii -*-
 """
 - Use 'python3 setup.py sdist' in a terminal to create the package.  
 - Use 'twine upload --repository-url https://upload.pypi.org/legacy/ dist/*' to upload the package on pypi.  
