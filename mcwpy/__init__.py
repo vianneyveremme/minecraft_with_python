@@ -1,4 +1,4 @@
- -*- coding: ascii -*-
+# -*- coding: ascii -*-
 """ MCWPy - Minecraft With Python
 
 MCWPy is a Python library for creating Minecraft datapacks using Python.

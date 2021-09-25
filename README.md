@@ -23,9 +23,27 @@ from mcwpy import *
 
 ### Example:  
 ```python
-from mcwpy import *
+# -*- coding: ascii -*-
+import minecraft_with_python.mcwpy as mcwpy
 
-# Since this is still in development, this should only print "Hello from the MCWPy community :)".
+datapack = mcwpy.Datapack(
+    pack_mcmeta=str(mcwpy.Pack_Meta(
+        author="<Your name here>",
+        description="<Description of your pack here>",
+        minecraft_version=mcwpy.Minecraft_Pack_Version.LATEST
+    )),
+    workspaces=[
+        mcwpy.Workspace(
+            content={'function': {'test': 'say Hello World!'}},
+            workspaces=[
+                mcwpy.Workspace(content={'new_test': 'say Hello World 2!'}),
+                mcwpy.Workspace(content={'test2': 'say Hello World!'}),
+            ]
+        )
+    ],
+    replace_existing=True,
+    auto_compile=True
+)
 ```  
 
 ## Contributing:
