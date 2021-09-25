@@ -1,3 +1,6 @@
+# 0.1.1 (2021/09/25)
++ Added `pack.mcmeta` generation.  
+
 # 0.1.0 (2021/08/08)
 + Added sub-workspaces.  
 
