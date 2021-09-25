@@ -8,7 +8,7 @@ from _version import __version__
 
 
 classifiers = [
-    'Development Status :: 1 - Planning',
+    'Development Status :: 2 - Pre-Alpha',
     'Intended Audience :: Customer Service',
     'Intended Audience :: Developers',
     'Intended Audience :: Education',
