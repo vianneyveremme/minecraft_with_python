@@ -3,7 +3,6 @@
 import minecraft_with_python.mcwpy.datapack as mcwpy
 import os
 import unittest
-import shutil
 
 
 class TestDatapack(unittest.TestCase):
