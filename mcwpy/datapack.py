@@ -91,6 +91,10 @@ class Datapack:
         """Return the number of workspaces in the Datapack."""
         return len(self.workspaces)
 
+    def __repr__(self) -> str:
+        """Return a string representation of the Datapack."""
+        return self.__str__()
+
     def __reversed__(self) -> None:
         """Return an iterator over the workspaces in the Datapack in reverse order."""
         return Datapack_Iterator(self.workspaces)[::-1]
@@ -187,6 +191,7 @@ class Datapack:
         else:
             # Print an error message and say the original file was saved.
             print(f'{Font.ERROR}Failed to create the file "{self.title}.zip".{Font.END}', f'{Font.FINAL_INFO}The file {self.title} was not deleted.{Font.END}')
+
 
 
 class Datapack_Iterator:
