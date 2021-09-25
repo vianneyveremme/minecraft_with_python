@@ -41,11 +41,10 @@ class Workspace:
         else:
             for file_type in self.content:
                 if any(file_type == e or file_type + 's' == e for e in [
-                    'advancements', 'functions', 'item_modifiers', 'loot_tables', 'predicates',
-                    'recipes', 'structures', 'tags', 'dimension', 'dimension_type', 'worldgen'
+                    'advancement', 'function', 'item_modifier', 'loot_table', 'predicate',
+                    'recipe', 'structure', 'tag', 'dimension', 'dimension_type', 'worldgen'
                 ]):
                     folder = file_type if file_type[-1] == 's' else file_type + 's'
-                    folder = 'functions' if 'fun' in folder else folder
 
                 make_directory(folder, os.path.join(path, self.name))
                 for file_name in self.content[file_type]:
