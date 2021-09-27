@@ -2,6 +2,7 @@
 from datetime import date
 from PIL import Image
 from time import time
+from .pack_meta import Pack_Meta
 from .workspace import Workspace
 from .utility import create_file, Font, make_directory, remove_directory
 import os
@@ -134,7 +135,7 @@ class Datapack:
         make_directory('data', os.path.join(self.path, self.title))
         
         # Create the pack.mcmeta file.
-        create_file('pack.mcmeta', os.path.join(self.path, self.title), self.pack_mcmeta)
+        create_file('pack.mcmeta', os.path.join(self.path, self.title), self.pack_mcmeta() if isinstance(self.pack_mcmeta, Pack_Meta) else self.pack_mcmeta)
 
         # Create the pack.png image.
         colors_list = [ord(c) % 255 for c in self.title]

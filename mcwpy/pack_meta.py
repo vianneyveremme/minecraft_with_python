@@ -17,3 +17,6 @@ class Pack_Meta:
 
     def __repr__(self) -> str:
         return json.dumps({'pack': self.meta}, indent=4)
+
+    def __call__(self) -> str:
+        return self.__repr__()
