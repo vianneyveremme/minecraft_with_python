@@ -65,7 +65,10 @@ class Datapack:
         # Auto-compile?
         if self.auto_compile:
             self.compile()
-            
+
+    def __call__(self) -> None:
+        self.compile()
+
     def __format__(self, format_specifier: str=None) -> str:
         """
         Formats the Datapack in a human-readable format depending on the format specifier.
