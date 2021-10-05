@@ -1,5 +1,6 @@
 # -*- coding: ascii -*-
 from .utility import create_file, Font, make_directory, remove_directory
+import json
 import os
 import random
 import string
@@ -52,6 +53,32 @@ class Workspace:
                         f'{file_name}.mcfunction' if 'fun' in file_type else f'{file_name}.json',
                         os.path.join(path, self.name, folder), self.content[file_type][file_name]
                     )
+
+                    # Load and Tick minecraft files.
+                    if file_name in ('load', 'load.mcfunction', 'main', 'main.mcfunction', 'tick', 'tick.mcfunction'):
+                        if not os.path.exists(os.path.join(path, 'minecraft', 'tags')):
+                            make_directory('tags', os.path.join(path, 'minecraft'))
+
+                        if not os.path.exists(os.path.join(path, 'minecraft', 'tags', 'functions')):
+                            make_directory('functions', os.path.join(path, 'minecraft', 'tags'))
+
+                        if 'load' in file_name:
+                            if os.path.exists(os.path.join(path, 'minecraft', 'tags', 'functions', 'load')):
+                                ...
+                            else:
+                                create_file('load.json', os.path.join(path, 'minecraft', 'tags', 'functions'), content=json.dumps({"values":[f"{self.name}:load"]}, indent=4))
+
+                        if 'main' in file_name:
+                            if os.path.exists(os.path.join(path, 'minecraft', 'tags', 'functions', 'tick')):
+                                ...
+                            else:
+                                create_file('tick.json', os.path.join(path, 'minecraft', 'tags', 'functions'), content=json.dumps({"values":[f"{self.name}:main"]}, indent=4))
+
+                        if 'tick' in file_name:
+                            if os.path.exists(os.path.join(path, 'minecraft', 'tags', 'functions', 'tick')):
+                                ...
+                            else:
+                                create_file('tick.json', os.path.join(path, 'minecraft', 'tags', 'functions'), content=json.dumps({"values":[f"{self.name}:tick"]}, indent=4))
 
         for w in self.workspaces:
             w.compile(os.path.join(path, self.name, folder), as_subfolder=True)
