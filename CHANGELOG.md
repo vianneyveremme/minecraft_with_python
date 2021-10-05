@@ -1,3 +1,6 @@
+# 0.1.2 (2021/10/05)
++ Started adding `load.json` and `tick.json` generation.  
+
 # 0.1.1 (2021/09/25)
 + Added `pack.mcmeta` generation.  
 
