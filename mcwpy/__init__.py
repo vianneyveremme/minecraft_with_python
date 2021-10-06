@@ -11,9 +11,9 @@ from .pack_meta import Pack_Meta
 import sys
 
 
-# Checking Python version (should be above 3.9.5)
-if sys.version_info < (3, 9, 5):
-    print(f"{Font.WARN}For optimal results it is recommended to use Python 3.9.5 or above.{Font.END}")
+# Checking Python version (should be above 3.10.0)
+if sys.version_info < (3, 10, 0):
+    print(f"{Font.WARN}For optimal results it is recommended to use Python 3.10.0 or above.{Font.END}")
 else:
     print(f"{Font.HEADER}{Font.BOLD}Hello from the MCWPy community :){Font.END}")
 
