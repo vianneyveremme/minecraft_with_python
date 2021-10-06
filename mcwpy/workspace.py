@@ -56,28 +56,24 @@ class Workspace:
 
                     # Load and Tick minecraft files.
                     if file_name in ('load', 'load.mcfunction', 'main', 'main.mcfunction', 'tick', 'tick.mcfunction'):
+                        json_ = f"{'load' if 'load' in file_name else 'tick'}.json"
+                        function = 'load' if 'load' in file_name else str('tick' if 'tick' in file_name else 'main')
+
                         if not os.path.exists(os.path.join(path, 'minecraft', 'tags')):
                             make_directory('tags', os.path.join(path, 'minecraft'))
 
                         if not os.path.exists(os.path.join(path, 'minecraft', 'tags', 'functions')):
                             make_directory('functions', os.path.join(path, 'minecraft', 'tags'))
 
-                        if 'load' in file_name:
-                            if os.path.exists(os.path.join(path, 'minecraft', 'tags', 'functions', 'load.json')):
-                                with open(os.path.join(path, 'minecraft', 'tags', 'functions', 'load.json'), 'r') as f:
-                                    data = json.load(f)
-                                    data['values'].append(f'{self.name}:load')
-                                with open(os.path.join(path, 'minecraft', 'tags', 'functions', 'load.json'), 'w') as f:
-                                    f.write(json.dumps(data, indent=4))
-                            else:
-                                create_file('load.json', os.path.join(path, 'minecraft', 'tags', 'functions'), content=json.dumps({"values":[f"{self.name}:load"]}, indent=4))
-
-                        if 'main' in file_name or 'tick' in file_name:
-                            if os.path.exists(os.path.join(path, 'minecraft', 'tags', 'functions', 'tick.json')):
-                                ...
-                            else:
-                                create_file('tick.json', os.path.join(path, 'minecraft', 'tags', 'functions'), 
-                                    content=json.dumps({"values":[f"{self.name}:{'main' if 'main' in file_name else 'tick'}"]}, indent=4))
+                        if os.path.exists(os.path.join(path, 'minecraft', 'tags', 'functions', json_)):
+                            with open(os.path.join(path, 'minecraft', 'tags', 'functions', json_), 'r') as f:
+                                data = json.load(f)
+                                data['values'].append(f"{self.name}:{function}")
+                            with open(os.path.join(path, 'minecraft', 'tags', 'functions', json_), 'w') as f:
+                                f.write(json.dumps(data, indent=4))
+                        else:
+                            create_file(json_, os.path.join(path, 'minecraft', 'tags', 'functions'), 
+                                content=json.dumps({"values": [f"{self.name}:{function}"]}, indent=4))
 
         for w in self.workspaces:
             w.compile(os.path.join(path, self.name, folder), as_subfolder=True)
