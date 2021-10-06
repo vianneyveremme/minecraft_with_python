@@ -8,7 +8,7 @@ from _version import __version__
 
 
 classifiers = [
-    'Development Status :: 2 - Pre-Alpha',
+    'Development Status :: 3 - Alpha',
     'Intended Audience :: Customer Service',
     'Intended Audience :: Developers',
     'Intended Audience :: Education',
@@ -16,7 +16,7 @@ classifiers = [
     'Operating System :: OS Independent',
     'License :: OSI Approved :: MIT License',
     'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.9'
+    'Programming Language :: Python :: 3.10'
 ]
 
 setup(
