@@ -19,7 +19,7 @@ class Workspace:
         :param workspaces: The workspaces that are contained in this workspace (subfolders).
         :return: None, this is a constructor.
         """
-        self.name = name if name is not None else f"workspace_{''.join([random.choice(string.ascii_letters + string.digits) for _ in range(8)])}"
+        self.name = name.lower() if name is not None else f"workspace_{''.join([random.choice(string.ascii_lowercase + string.digits) for _ in range(8)])}"
         self.content = content if content is not None else {}
         self.workspaces = workspaces if workspaces is not None else {}
         
@@ -63,22 +63,21 @@ class Workspace:
                             make_directory('functions', os.path.join(path, 'minecraft', 'tags'))
 
                         if 'load' in file_name:
-                            if os.path.exists(os.path.join(path, 'minecraft', 'tags', 'functions', 'load')):
-                                ...
+                            if os.path.exists(os.path.join(path, 'minecraft', 'tags', 'functions', 'load.json')):
+                                with open(os.path.join(path, 'minecraft', 'tags', 'functions', 'load.json'), 'r') as f:
+                                    data = json.load(f)
+                                    data['values'].append(f'{self.name}:load')
+                                with open(os.path.join(path, 'minecraft', 'tags', 'functions', 'load.json'), 'w') as f:
+                                    f.write(json.dumps(data, indent=4))
                             else:
                                 create_file('load.json', os.path.join(path, 'minecraft', 'tags', 'functions'), content=json.dumps({"values":[f"{self.name}:load"]}, indent=4))
 
-                        if 'main' in file_name:
-                            if os.path.exists(os.path.join(path, 'minecraft', 'tags', 'functions', 'tick')):
+                        if 'main' in file_name or 'tick' in file_name:
+                            if os.path.exists(os.path.join(path, 'minecraft', 'tags', 'functions', 'tick.json')):
                                 ...
                             else:
-                                create_file('tick.json', os.path.join(path, 'minecraft', 'tags', 'functions'), content=json.dumps({"values":[f"{self.name}:main"]}, indent=4))
-
-                        if 'tick' in file_name:
-                            if os.path.exists(os.path.join(path, 'minecraft', 'tags', 'functions', 'tick')):
-                                ...
-                            else:
-                                create_file('tick.json', os.path.join(path, 'minecraft', 'tags', 'functions'), content=json.dumps({"values":[f"{self.name}:tick"]}, indent=4))
+                                create_file('tick.json', os.path.join(path, 'minecraft', 'tags', 'functions'), 
+                                    content=json.dumps({"values":[f"{self.name}:{'main' if 'main' in file_name else 'tick'}"]}, indent=4))
 
         for w in self.workspaces:
             w.compile(os.path.join(path, self.name, folder), as_subfolder=True)
