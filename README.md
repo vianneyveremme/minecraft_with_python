@@ -14,7 +14,7 @@ A new way of coding [Minecraft](https://www.minecraft.net).
 ## Usage:  
 Now you should be able to import the library in your new [Python](https://www.python.org/downloads/) programs you can use the project below to help you get started with the library:  
 ```py 
-from mcwpy import *
+import mcwpy
 ```  
 * Create and compile your own datapack.  
 * Once the datapack is generated, paste it in the *datapacks* folder of your [Minecraft](https://www.minecraft.net/download) world.  
@@ -24,21 +24,31 @@ from mcwpy import *
 ### Example:  
 ```python
 # -*- coding: ascii -*-
-import minecraft_with_python.mcwpy as mcwpy
+import mcwpy
 
 datapack = mcwpy.Datapack(
-    pack_mcmeta=str(mcwpy.Pack_Meta(
+    pack_mcmeta=mcwpy.Pack_Meta(
         author="<Your name here>",
         description="<Description of your pack here>",
         minecraft_version=mcwpy.Minecraft_Pack_Version.LATEST
-    )),
+    ),
     workspaces=[
         mcwpy.Workspace(
-            content={'function': {'test': 'say Hello World!'}},
+            content={'function': {
+                'test': 'say Hello World!',
+                'load': 'tellraw @a {"text":"Datapack successfuly loaded!","color":"green"}',
+                "main": 'effect give @a speed 1 1 true'
+            }},
             workspaces=[
-                mcwpy.Workspace(content={'new_test': 'say Hello World 2!'}),
+                mcwpy.Workspace(content={'load': 'say Hello World 2!'}),
                 mcwpy.Workspace(content={'test2': 'say Hello World!'}),
             ]
+        ),
+        mcwpy.Workspace(
+            name='workspace_2',
+            content={'function': {
+                'load': 'say Hello World 2!'
+            }}
         )
     ],
     replace_existing=True,

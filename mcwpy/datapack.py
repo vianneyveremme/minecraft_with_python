@@ -148,20 +148,16 @@ class Datapack:
         img.putdata([(colors_list[(i // cl_div) % cl_len], colors_list[((i // cl_div) + 1) % cl_len], colors_list[((i // cl_div) + 2) % cl_len]) for i in range (128 * 128)])
         img.save(os.path.join(self.path, self.title, 'pack.png'))
 
+        # Add the minecraft Workspace to the Datapack.
+        Workspace(name='minecraft').compile(os.path.join(self.path, self.title, 'data'))
+
         # Compile every workspace in the Datapack.
-        is_minecraft_workspace_defined = False
         for w in self.workspaces:
             w.compile(os.path.join(self.path, self.title, 'data'))
-            if w.name == 'minecraft':
-                is_minecraft_workspace_defined = True
 
         ########################
         # AT THE END
         ########################
-        # Add the minecraft Workspace to the Datapack.
-        if not is_minecraft_workspace_defined:
-            Workspace(name='minecraft').compile(os.path.join(self.path, self.title, 'data'))
-
         # Zip the Datapack.
         if self.compile_as_zip:
             self.to_zip()
