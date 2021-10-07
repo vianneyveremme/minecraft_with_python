@@ -24,37 +24,16 @@ import mcwpy
 ### Example:  
 ```python
 # -*- coding: ascii -*-
-import mcwpy
+from mcwpy import *
 
-datapack = mcwpy.Datapack(
-    pack_mcmeta=mcwpy.Pack_Meta(
-        author="<Your name here>",
-        description="<Description of your pack here>",
-        minecraft_version=mcwpy.Minecraft_Pack_Version.LATEST
-    ),
-    workspaces=[
-        mcwpy.Workspace(
-            content={'function': {
-                'test': 'say Hello World!',
-                'load': 'tellraw @a {"text":"Datapack successfuly loaded!","color":"green"}',
-                "main": 'effect give @a speed 1 1 true'
-            }},
-            workspaces=[
-                mcwpy.Workspace(content={'load': 'say Hello World 2!'}),
-                mcwpy.Workspace(content={'test2': 'say Hello World!'}),
-            ]
-        ),
-        mcwpy.Workspace(
-            name='workspace_2',
-            content={'function': {
-                'load': 'say Hello World 2!'
-            }}
-        )
-    ],
-    replace_existing=True,
-    auto_compile=True
-)
-```  
+Datapack(workspaces=[name='my_workspace', content={'functions':{
+    'hello_world': 'say Hello World!'
+}}])
+```
+```mcfunction
+function my_workspace:hello_world
+```
+![Screenshot 2021-10-07 162422](https://user-images.githubusercontent.com/88092549/136458850-c71a3e5b-4351-498f-9161-9f2438f8ea91.png)
 
 ## Contributing:
 If you want to contribute to this project, you can do so by forking it and sending a pull request, I am opened to any idea and contribution.
