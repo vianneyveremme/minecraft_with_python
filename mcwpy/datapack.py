@@ -144,8 +144,8 @@ class Datapack:
         colors_list = [ord(c) % 255 for c in self.title]
         cl_len = len(colors_list)
         cl_div = sum([int(v) for v in f'{cl_len:b}'])
-        img = Image.new(mode='RGB', size=(128, 128), color=(0, 0, 0))
-        img.putdata([(colors_list[(i // cl_div) % cl_len], colors_list[((i // cl_div) + 1) % cl_len], colors_list[((i // cl_div) + 2) % cl_len]) for i in range (128 * 128)])
+        img = Image.new(mode='RGB', size=(64, 64), color=(0, 0, 0))
+        img.putdata([(colors_list[(i // cl_div) % cl_len], colors_list[((i // cl_div) + 1) % cl_len], colors_list[((i // cl_div) + 2) % cl_len]) for i in range (64 * 64)])
         img.save(os.path.join(self.path, self.title, 'pack.png'))
 
         # Add the minecraft Workspace to the Datapack.
