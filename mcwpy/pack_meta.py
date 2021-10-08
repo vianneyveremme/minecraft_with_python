@@ -14,7 +14,9 @@ class Pack_Meta:
         """
         self.meta = dict()
 
-        self.meta['author'] = author if isinstance(author, str) and len(author) > 0 else 'MCWPy'
+        if isinstance(author, str) and len(author) > 0:
+            self.meta['author'] = author
+
         self.meta['description'] = description if isinstance(description, str) and len(description) > 0 else 'A Minecraft datapack.'
         self.meta['pack_format'] = minecraft_version if isinstance(minecraft_version, Minecraft_Pack_Version) else Minecraft_Pack_Version.LATEST
 

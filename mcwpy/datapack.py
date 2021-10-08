@@ -50,7 +50,7 @@ class Datapack:
         self.title = title if title not in [None, ''] else "My_Amazing_Datapack"
         self.path = (path if path[-len(os.path.sep)] != os.path.sep else path[:-len(os.path.sep)]) if path is not None else os.getcwd()
         self.author = author if author is not None else "MCWPy"
-        self.pack_mcmeta = pack_mcmeta if pack_mcmeta is not None else {}
+        self.pack_mcmeta = pack_mcmeta if pack_mcmeta is not None else Pack_Meta()
         self.workspaces = (workspaces if isinstance(workspaces, list) else [workspaces]) if workspaces is not None else []
         self.auto_compile = auto_compile if auto_compile is not None else False
         self.compile_as_zip = compile_as_zip if compile_as_zip is not None else False

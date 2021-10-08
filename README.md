@@ -26,9 +26,9 @@ import mcwpy
 # -*- coding: ascii -*-
 from mcwpy import *
 
-Datapack(workspaces=[name='my_workspace', content={'functions':{
+Datapack(workspaces=[Workspace(name='my_workspace', content={'functions':{
     'hello_world': 'say Hello World!'
-}}])
+}})])()
 ```
 ```mcfunction
 function my_workspace:hello_world
