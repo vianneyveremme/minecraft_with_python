@@ -44,7 +44,7 @@ def create_file(name, path: str='', content: object='') -> None:
             for line in content:
                 f.write(f'{line}\n')
         elif isinstance(content, dict):
-            json.dumps(content, indent=4, sort_keys=True)
+            f.write(json.dumps(content, indent=4, sort_keys=True))
         else:
             raise TypeError(f'Argument "content" must be of type "str" or "list" not {type(content)}!')
         directory_name = f'{path[len(os.getcwd()) + 1:]}{os.path.sep}{Font.END}{name}{Font.OK_GREEN}'
