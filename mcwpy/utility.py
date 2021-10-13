@@ -50,6 +50,16 @@ def create_file(name, path: str='', content: object='') -> None:
         directory_name = f'{path[len(os.getcwd()) + 1:]}{os.path.sep}{Font.END}{name}{Font.OK_GREEN}'
         print(f'{Font.OK_GREEN}Successfuly created the file "{directory_name}".{Font.END}')
 
+def import_from_file(path: str) -> dict | list:
+    """
+    Import a file from the given path.
+
+    :param path: Path to the file to import.
+    :return: The content of the file.
+    """
+    with open(path, 'r') as f:
+        return json.load(f) if path.endswith('.json') else f.readlines()
+
 def make_directory(name: str, path: str='') -> None:
     """
     Create a directory with the given name and path.
@@ -61,13 +71,13 @@ def make_directory(name: str, path: str='') -> None:
     directory_name = f'{path[len(os.getcwd()) + 1:]}{os.path.sep}{Font.END}{name}{Font.OK_GREEN}'
     print(f'{Font.OK_GREEN}Successfuly created the directory "{directory_name}".{Font.END}')
 
-def remove_directory(name: str, path: str='') -> None:
-    directory_name = f'{path[len(os.getcwd()) + 1:]}{os.path.sep}{Font.END}{name}{Font.OK_GREEN}'
-    if os.path.exists(f'{os.path.join(path, name)}'):
+def remove_directory(path: str='') -> None:
+    directory_name = f'{path[len(os.getcwd()) + 1:]}{os.path.sep}{Font.END}{path.split(os.path.sep)[-1]}'
+    if os.path.exists(path):
         try:
-            shutil.rmtree(os.path.join(path, name))
+            shutil.rmtree(path)
             print(f'{Font.FINAL_INFO}Successfuly removed the directory "{directory_name}{Font.FINAL_INFO}".')
         except OSError:
-            print(f'{Font.ERROR}Could not remove the directory "{directory_name}".{Font.END}".{Font.END}')
+            print(f'{Font.ERROR}Could not remove the directory "{directory_name}{Font.ERROR}".{Font.END}')
     else:
         print(f'{Font.WARN}Directory "{directory_name}".{Font.END}" does not exist!{Font.END}')
