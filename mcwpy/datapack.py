@@ -129,7 +129,7 @@ class Datapack:
         """
         if os.path.exists(os.path.join(self.path, self.title)):
             if self.replace_existing or input(f'{Font.WARN}{self.title} already exists, do you want to replace it? [yes/no]: {Font.END}')[0].lower() == 'y':
-                remove_directory(self.title, self.path)
+                remove_directory(os.path.join(self.path, self.title))
             else:
                 raise FileExistsError(f'{Font.ERROR}{self.title} already exists, and you have not chosen to replace it.{Font.END}')
 
@@ -187,7 +187,7 @@ class Datapack:
 
             # Remove the original files
             if os.path.exists(os.path.join(self.path, self.title)):
-                remove_directory(self.title, self.path)
+                remove_directory(os.path.join(self.path, self.title))
         else:
             # Print an error message and say the original file was saved.
             print(f'{Font.ERROR}Failed to create the file "{self.title}.zip".{Font.END}', f'{Font.FINAL_INFO}The file {self.title} was not deleted.{Font.END}')
