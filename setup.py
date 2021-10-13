@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: ascii -*-
 """
 - Use 'python3 setup.py sdist' in a terminal to create the package.  
 - Use 'twine upload --repository-url https://upload.pypi.org/legacy/ dist/*' to upload the package on pypi.  
@@ -6,8 +6,9 @@
 from setuptools import setup, find_packages
 from _version import __version__
 
+
 classifiers = [
-    'Development Status :: 1 - Planning',
+    'Development Status :: 4 - Beta',
     'Intended Audience :: Customer Service',
     'Intended Audience :: Developers',
     'Intended Audience :: Education',
@@ -15,8 +16,7 @@ classifiers = [
     'Operating System :: OS Independent',
     'License :: OSI Approved :: MIT License',
     'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.9'
-    
+    'Programming Language :: Python :: 3.10'
 ]
 
 setup(
@@ -31,7 +31,7 @@ setup(
     long_description_content_type='text/markdown',
     name='mcwpy',
     packages=find_packages(exclude=['tests']),
-    py_modules=['ansi_escape_sequences', 'datapack', 'datapack', 'test'],
+    py_modules=['ansi_escape_sequences', 'datapack', 'workspace'],
     url='https://github.com/vianneyveremme/minecraft_with_python',
     version=__version__,
     zip_safe=False

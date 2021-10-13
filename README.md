@@ -14,7 +14,7 @@ A new way of coding [Minecraft](https://www.minecraft.net).
 ## Usage:  
 Now you should be able to import the library in your new [Python](https://www.python.org/downloads/) programs you can use the project below to help you get started with the library:  
 ```py 
-from mcwpy import *
+import mcwpy
 ```  
 * Create and compile your own datapack.  
 * Once the datapack is generated, paste it in the *datapacks* folder of your [Minecraft](https://www.minecraft.net/download) world.  
@@ -23,10 +23,17 @@ from mcwpy import *
 
 ### Example:  
 ```python
+# -*- coding: ascii -*-
 from mcwpy import *
 
-# Since this is still in development, this should only print "Hello from the MCWPy community :)".
-```  
+Datapack(workspaces=[Workspace(name='my_workspace', content={'functions':{
+    'hello_world': 'say Hello World!'
+}})])()
+```
+```mcfunction
+function my_workspace:hello_world
+```
+![Screenshot 2021-10-07 162422](https://user-images.githubusercontent.com/88092549/136458850-c71a3e5b-4351-498f-9161-9f2438f8ea91.png)
 
 ## Contributing:
 If you want to contribute to this project, you can do so by forking it and sending a pull request, I am opened to any idea and contribution.
