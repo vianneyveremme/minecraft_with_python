@@ -1,3 +1,7 @@
+# 0.2.0 [Beta release] (2021/10/13)
++ Added importation function.  
++ Added a default Minecraft functions library to import from.  
+
 # 0.1.3 (2021/10/06)
 + Added `load.json` and `tick.json` generation.  
 
