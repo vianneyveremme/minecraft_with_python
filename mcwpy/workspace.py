@@ -50,5 +50,24 @@ class Workspace:
                     )
                 elif isinstance(self.arguments[key_word][key], Workspace):
                     self.arguments[key_word][key].compile(os.path.join(path, self.name, key_word), as_subfolder=True)
-                else:
-                    print('dunno')
+                
+                # Load and tick JSONs
+                if key_word == 'functions' and key in ['load', 'main', 'tick']:
+                    json_ = f"{'load' if key == 'load' else 'tick'}.json"
+                    function = 'load' if key == 'load' else str('tick' if key == 'tick' else 'main')
+
+                    if not os.path.exists(os.path.join(path, 'minecraft', 'tags')):
+                        make_directory('tags', os.path.join(path, 'minecraft'))
+
+                    if not os.path.exists(os.path.join(path, 'minecraft', 'tags', 'functions')):
+                        make_directory('functions', os.path.join(path, 'minecraft', 'tags'))
+
+                    if os.path.exists(os.path.join(path, 'minecraft', 'tags', 'functions', json_)):
+                        with open(os.path.join(path, 'minecraft', 'tags', 'functions', json_), 'r') as f:
+                            data = json.load(f)
+                            data['values'].append(f"{self.name}:{function}")
+                        with open(os.path.join(path, 'minecraft', 'tags', 'functions', json_), 'w') as f:
+                            f.write(json.dumps(data, indent=4))
+                    else:
+                        create_file(json_, os.path.join(path, 'minecraft', 'tags', 'functions'), 
+                            content=json.dumps({"values": [f"{self.name}:{function}"]}, indent=4))
