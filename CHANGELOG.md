@@ -1,3 +1,8 @@
+# 0.3.0 (2021/10/18)
++ Added easy-to-use ray trace function.  
++ Added scripts to ease Python package update.  
+* Updated the way Workspaces work.  
+
 # 0.2.0 [Beta release] (2021/10/13)
 + Added importation function.  
 + Added a default Minecraft functions library to import from.  
