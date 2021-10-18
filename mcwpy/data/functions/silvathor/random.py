@@ -4,7 +4,7 @@ def random(maximum: int=0, score: str='silvathor_RANDOM'):
 
     :param maximum: The maximum value of the random number (excluded).
     :param score: The name of the Minecraft score for the random number.
-    :return: random number
+    :return: A random number.
     """
     score.lower().replace(' ', '_')
     
