@@ -24,7 +24,17 @@ class Workspace:
             'advancements', 'dimension', 'dimension_type', 'functions', 'item_modifiers', 
             'loot_tables', 'predicates', 'recipes', 'structures', 'tags', 'worldgen'
         }
-        
+
+    def __repr__(self) -> str:
+        # print the workspace with each of its arguments and arguments content.
+        return "---- {}\n\t|\n\t---- {}\n\t\t|\n\t\t{}".format(
+            self.name, ''.join(map(lambda x: x, self.arguments)),
+            ''.join(map(lambda x: json.dumps(self.arguments[x]), self.arguments))
+        )
+
+    def __str__(self) -> str:
+        return self.__repr__()
+
     def compile(self, path: str, as_subfolder: bool=False) -> None:
         # Create the workspace folder.
         make_directory(self.name, path)

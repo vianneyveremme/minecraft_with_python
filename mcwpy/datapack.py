@@ -97,7 +97,10 @@ class Datapack:
 
     def __repr__(self) -> str:
         """Return a string representation of the Datapack."""
-        return self.__str__()
+        return "---- {}\n\t|\n\t---- pack.mcmeta: {}\n\t---- pack.png\n\t---- data\n\t\t|\n\t\t{}".format(
+            self.title, str(self.pack_mcmeta).replace('\n', '').replace('    ', ' ').replace(' "', '"').replace(' }', '}'), 
+            ', \n\t\t'.join(map(lambda x: f'---- {x.name}', self.workspaces))
+        )
 
     def __reversed__(self) -> None:
         """Return an iterator over the workspaces in the Datapack in reverse order."""
@@ -105,9 +108,7 @@ class Datapack:
 
     def __str__(self) -> str:
         """Return a string representation of the Datapack."""
-        return "---- {}\n\t|\n\t---- pack.mcmeta: {}\n\t---- pack.png\n\t---- data\n\t\t|\n\t\t{}".format(
-            self.title, self.pack_mcmeta, ', \n\t\t'.join(map(lambda x: f'---- {x.name}', self.workspaces))
-        )
+        return self.__repr__()
 
     def append(self, element: object) -> None:
         """

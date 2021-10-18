@@ -32,5 +32,3 @@ def ray_trace(function_name: str, score:str='vianpyro_RAY', condition: str | lis
         f'execute unless score @s {score} matches {range}.. if block ~ ~ ~ air positioned ^ ^ ^{step} run function {function_name}',
         f'scoreboard players reset @s {score}'
     ])
-
-print(ray_trace('vianpyro:ray_trace'))
