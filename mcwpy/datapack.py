@@ -4,7 +4,7 @@ from PIL import Image
 from time import time
 from .pack_meta import Pack_Meta
 from .workspace import Workspace
-from .utility import create_file, Font, make_directory, remove_directory
+from .utility import Minecraft_Pack_Version, create_file, Font, make_directory, remove_directory
 import os
 import shutil
 
@@ -50,13 +50,19 @@ class Datapack:
         self.title = title if title not in [None, ''] else "My_Amazing_Datapack"
         self.path = (path if path[-len(os.path.sep)] != os.path.sep else path[:-len(os.path.sep)]) if path is not None else os.getcwd()
         self.author = author if author is not None else "MCWPy"
-        self.pack_mcmeta = pack_mcmeta if pack_mcmeta is not None else Pack_Meta()
         self.workspaces = (workspaces if isinstance(workspaces, list) else [workspaces]) if workspaces is not None else []
         self.auto_compile = auto_compile if auto_compile is not None else False
         self.compile_as_zip = compile_as_zip if compile_as_zip is not None else False
         self.replace_existing = replace_existing if replace_existing is not None else False
         self.description = description if description is not None else ""
         self.version = version if version is not None else f'{str(date.today().isocalendar()[0])[-2:]}w{date.today().isocalendar()[1]}s{int(time())}'
+
+        self.pack_mcmeta = pack_mcmeta if pack_mcmeta is not None else Pack_Meta(
+            author=self.author,
+            description=self.description,
+            minecraft_version=Minecraft_Pack_Version.LATEST,
+            version=self.version
+        )
 
         # Verifies that the workspaces are valid.
         if not all(isinstance(w, Workspace) for w in self.workspaces):

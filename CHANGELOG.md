@@ -1,3 +1,7 @@
+# 0.3.1 (2021/10/20)
+* Fixed Workspaces.  
+* Updated the `README.md`.  
+
 # 0.3.0 (2021/10/18)
 + Added easy-to-use ray trace function.  
 + Added scripts to ease Python package update.  
