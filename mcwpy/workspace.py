@@ -48,25 +48,24 @@ class Workspace:
                 make_directory(key_word, os.path.join(path, self.name))
             
             for key in self.content[key_word]:
-                if isinstance(key, str):
+                if isinstance(key, str | list):
                     create_file(
                         f'{key}.' + ('mcfunction' if key_word == 'functions' else 'json') if key_word in self.possible_arguments else key,
-                        os.path.join(path, self.name, '' if _as_subfolder else key_word), self.content[key_word][key]
-                    )
-                elif isinstance(key, list):
-                    create_file(
-                        f'{key}.' + ('mcfunction' if key_word == 'functions' else 'json') if key_word in self.possible_arguments else key,
-                        os.path.join(path, self.name, '' if _as_subfolder else key_word), '\n'.join(self.content[key_word][key])
+                        os.path.join(path, self.name) if _as_subfolder else os.path.join(path, self.name, key_word),
+                        self.content[key_word][key] if isinstance(key, str) else '\n'.join(self.content[key_word][key])
                     )
                 elif isinstance(key, dict):
                     for sub_key in key.keys():
                         create_file(
                             f'{sub_key}.' + ('mcfunction' if key_word == 'functions' else 'json') if key_word in self.possible_arguments else sub_key,
-                            os.path.join(path, self.name, '' if _as_subfolder else key_word), key[sub_key]
+                            os.path.join(path, self.name) if _as_subfolder else os.path.join(path, self.name, key_word),
+                            key[sub_key]
                         )
                 elif isinstance(key, Workspace):
-                    key.compile(os.path.join(path, self.name, key_word if not _as_subfolder else ''), as_subfolder=True)
-                
+                    key.compile(os.path.join(path, self.name) if _as_subfolder else os.path.join(path, self.name, key_word), as_subfolder=True)
+                else:
+                    raise TypeError(f'{key} is not a valid type.')
+
                 # Load and tick JSONs
                 def create_tick_load(filename:str):
                     if not os.path.exists(os.path.join(path, 'minecraft', 'tags')):
