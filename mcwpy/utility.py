@@ -37,7 +37,7 @@ def create_file(name, path: str='', content: object='') -> None:
     :param path: Path to the file to create.
     :param content: Content to write to the file.
     """
-    with open(f'{path}{os.path.sep}{name}', 'w+') as f:
+    with open(f'{path}{os.path.sep}{name}', 'w+', encoding='utf-8') as f:
         if isinstance(content, str):
             f.write(content)
         elif isinstance(content, list):

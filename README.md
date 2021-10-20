@@ -28,7 +28,10 @@ from mcwpy import *
 
 workspace1 = Workspace(
     name = 'my_workspace',
-    functions = {'load': 'tellraw @a {"text":"Datapack loaded!"}'}
+    functions = {
+        'load': 'tellraw @a {"text":"Datapack loaded!"}',
+        'hello_world': 'say Hello World!'
+    }
 )
 
 my_datapack = Datapack(
