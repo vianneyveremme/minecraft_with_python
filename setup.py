@@ -32,6 +32,7 @@ setup(
     name='mcwpy',
     packages=find_packages(exclude=['tests']),
     py_modules=['ansi_escape_sequences', 'datapack', 'workspace'],
+    python_requires='>=3.10',
     url='https://github.com/vianneyveremme/minecraft_with_python',
     version=__version__,
     zip_safe=False
