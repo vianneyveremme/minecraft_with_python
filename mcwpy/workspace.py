@@ -1,5 +1,5 @@
 # -*- coding: ascii -*-
-from .utility import create_file, Font, make_directory, remove_directory
+from .utility import create_file, make_directory
 import json
 import os
 import random
