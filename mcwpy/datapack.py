@@ -2,6 +2,7 @@
 from datetime import date
 from PIL import Image
 from time import time
+from typing import Any, Dict, List, Union
 from .pack_meta import Pack_Meta
 from .workspace import Workspace
 from .utility import Minecraft_Pack_Version, create_file, Font, make_directory, remove_directory
@@ -24,8 +25,8 @@ class Datapack:
                  title: str=None,
                  path: str=None,
                  author: str=None,
-                 pack_mcmeta: dict=None,
-                 workspaces: list=None,
+                 pack_mcmeta: Union[Pack_Meta, Dict[str, Any]]=None,
+                 workspaces: Union[Workspace, List[Workspace]]=None,
                  auto_compile: bool=None,
                  compile_as_zip: bool=None,
                  replace_existing: bool=None,
@@ -47,7 +48,7 @@ class Datapack:
         :param version: The version of the datapack.
         :return: None; this is a constructor.
         """
-        self.title = title if title not in [None, ''] else "My_Amazing_Datapack"
+        self.title = title if title not in (None, '') else "My_Amazing_Datapack"
         self.path = (path if path[-len(os.path.sep)] != os.path.sep else path[:-len(os.path.sep)]) if path is not None else os.getcwd()
         self.author = author if author is not None else "MCWPy"
         self.workspaces = (workspaces if isinstance(workspaces, list) else [workspaces]) if workspaces is not None else []
