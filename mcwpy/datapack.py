@@ -56,7 +56,7 @@ class Datapack:
         self.compile_as_zip = compile_as_zip if compile_as_zip is not None else False
         self.replace_existing = replace_existing if replace_existing is not None else False
         self.description = description if description is not None else ""
-        self.version = version if version is not None else f'{str(date.today().isocalendar()[0])[-2:]}w{date.today().isocalendar()[1]}s{int(time())}'
+        self.version = version if version is not None else f'{str(date.today().isocalendar()[0])[-2:]}w{date.today().isocalendar()[1]}s{hex(int(time()))[2:]}'
 
         self.pack_mcmeta = pack_mcmeta if pack_mcmeta is not None else Pack_Meta(
             author=self.author,
