@@ -1,7 +1,15 @@
 # -*- coding: ascii -*-
-""" MCWPy - Minecraft With Python
+""" 
+ __  __  _______          _______       
+|  \/  |/ ____\ \        / /  __ \      
+| \  / | |     \ \  /\  / /| |__) |   _ 
+| |\/| | |      \ \/  \/ / |  ___/ | | |
+| |  | | |____   \  /\  /  | |   | |_| |
+|_|  |_|\_____|   \/  \/   |_|    \__, |
+                                   __/ |
+                                  |___/ 
 
-MCWPy is a Python library for creating Minecraft datapacks using Python.
+Minecraft with Python is a Python library for creating Minecraft datapacks using Python.
     https://github.com/vianneyveremme/minecraft_with_python
 """
 from .datapack import Datapack
