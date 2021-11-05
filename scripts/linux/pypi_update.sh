@@ -1,6 +1,8 @@
 # Run the setup verification script.
 python3 verify_setup.py
 
+cd ../..
+
 # Ask the user if the setup is correct.
 read -p "Is the setup correct? (y/n) " -n 1 -r
 if [[ $REPLY =~ ^[Yy]$ ]]

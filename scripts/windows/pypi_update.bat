@@ -1,6 +1,8 @@
 @echo off
 setlocal
 
+cd %~dp0/../../
+
 :: Run the setup verification script.
 python3 verify_setup.py
 
