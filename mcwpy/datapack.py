@@ -24,45 +24,35 @@ class Datapack:
     def __init__(self, 
                  title: str=None,
                  path: str=None,
-                 author: str=None,
                  pack_mcmeta: Union[Pack_Meta, Dict[str, Any]]=None,
                  workspaces: Union[Workspace, List[Workspace]]=None,
                  auto_compile: bool=None,
                  compile_as_zip: bool=None,
                  replace_existing: bool=None,
-                 description: str=None,
-                 version: str=None
                  ) -> None:
         """
         Initialize a new Datapack object which will then generate a Minecraft Datapack.
 
         :param title: The title of the datapack.
         :param path: The path to the datapack.
-        :param author: The author of the datapack.
         :param pack_mcmeta: The metadata of the datapack.
         :param workspaces: The workspace(s) in the datapack.
         :param auto_compile: Whether or not to automatically compile the datapack.
         :param compile_as_zip: Whether or not to compile the datapack as a zip file.
         :param replace_existing: Whether or not to replace an existing datapack with the same name.
-        :param description: A short description of the datapack.
-        :param version: The version of the datapack.
         :return: None; this is a constructor.
         """
         self.title = title if title not in (None, '') else "My_Amazing_Datapack"
         self.path = (path if path[-len(os.path.sep)] != os.path.sep else path[:-len(os.path.sep)]) if path is not None else os.getcwd()
-        self.author = author if author is not None else "MCWPy"
         self.workspaces = (workspaces if isinstance(workspaces, list) else [workspaces]) if workspaces is not None else []
         self.auto_compile = auto_compile if auto_compile is not None else False
         self.compile_as_zip = compile_as_zip if compile_as_zip is not None else False
         self.replace_existing = replace_existing if replace_existing is not None else False
-        self.description = description if description is not None else ""
-        self.version = version if version is not None else f'{str(date.today().isocalendar()[0])[-2:]}w{date.today().isocalendar()[1]}s{hex(int(time()))[2:]}'
 
         self.pack_mcmeta = pack_mcmeta if pack_mcmeta is not None else Pack_Meta(
-            author=self.author,
-            description=self.description,
+            author=f"{os.getlogin()} using MCWPy",
             minecraft_version=Minecraft_Pack_Version.LATEST,
-            version=self.version
+            version=f'{str(date.today().isocalendar()[0])[-2:]}w{date.today().isocalendar()[1]}s{hex(int(time()))[2:]}'
         )
 
         # Verifies that the workspaces are valid.
@@ -125,9 +115,11 @@ class Datapack:
         """
         if isinstance(element, Workspace):
             self.workspaces.append(element)
-        elif isinstance(element, list):
+        elif isinstance(element, list | Workspace):
             for e in element:
                 self.append(e)
+        else:
+            raise TypeError(f'{Font.ERROR}The "element" parameter must be a Workspace or a list of Workspaces.{Font.END}')
 
     def compile(self) -> None:
         """
