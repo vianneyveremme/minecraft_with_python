@@ -1,4 +1,8 @@
 # -*- coding: ascii -*-
-from .functions import *
+from .mcfunctions import *
+from .minecraft import *
 
-__all__ = ['functions']
+__all__ = [
+    'mcfunctions',
+    'minecraft'
+]
