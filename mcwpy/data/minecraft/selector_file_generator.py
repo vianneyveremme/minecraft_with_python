@@ -9,7 +9,7 @@ if __name__ == '__main__':
 
     with open(os.path.join(os.getcwd(), 'mcwpy', 'data', 'minecraft', 'selector.py'), 'w+') as f:
         # Imports
-        f.write('# -*- coding: ascii\nfrom dataclasses import dataclass\n\n\n')
+        f.write('# -*- coding: ascii -*-\nfrom dataclasses import dataclass\n\n\n')
 
         # Main class
         f.write('\n\t'.join([
