@@ -21,9 +21,6 @@ try:
 except Exception as e:
     print(f'{Font.FAIL}Unable to resolve latest release version: "{e}"{Font.END}')
     quit()
-except BaseException:
-    print(f'{Font.FAIL}Unable to resolve latest release version.{Font.END}')
-    quit()
 else:
     print(f'{Font.OK_GREEN}Latest released version: {data["info"]["version"]}.{Font.END}')
 del requests
