@@ -1,6 +1,7 @@
 # [Minecraft](https://www.minecraft.net)-[Datapacks](https://minecraft.gamepedia.com/Data_Pack)-Generator  
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/vianneyveremme/minecraft_with_python.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/vianneyveremme/minecraft_with_python/alerts/)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/vianneyveremme/minecraft_with_python.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/vianneyveremme/minecraft_with_python/context:python)
+[![Downloads](https://static.pepy.tech/personalized-badge/mcwpy?period=total&units=international_system&left_color=grey&right_color=blue&left_text=Downloads)](https://pepy.tech/project/mcwpy)
 
 ## Description:  
 A new way of coding [Minecraft](https://www.minecraft.net).
