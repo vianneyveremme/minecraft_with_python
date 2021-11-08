@@ -1,4 +1,6 @@
 # [Minecraft](https://www.minecraft.net)-[Datapacks](https://minecraft.gamepedia.com/Data_Pack)-Generator  
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/vianneyveremme/minecraft_with_python.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/vianneyveremme/minecraft_with_python/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/vianneyveremme/minecraft_with_python.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/vianneyveremme/minecraft_with_python/context:python)
 
 ## Description:  
 A new way of coding [Minecraft](https://www.minecraft.net).
