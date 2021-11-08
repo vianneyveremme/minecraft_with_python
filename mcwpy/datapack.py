@@ -77,31 +77,20 @@ class Datapack:
 
     def __getitem__(self, index: int) -> Workspace:
         """
-        Select the workspace at the given index.
+        Return the Workspace at the given index.
 
-        :param index: The index of the workspace to select.
-        :return: The selected workspace.
+        :param index: The index of the Workspace to return.
+        :return: The Workspace at the given index.
         """
         return self.workspaces[index]
 
-    def __iter__(self) -> iter:
-        """Return an iterator over the workspaces in the Datapack."""
-        return Datapack_Iterator(self.workspaces)
-
     def __len__(self) -> int:
-        """Return the number of workspaces in the Datapack."""
+        """Return the number of Workspaces in the Datapack."""
         return len(self.workspaces)
 
     def __repr__(self) -> str:
         """Return a string representation of the Datapack."""
-        return "---- {}\n\t|\n\t---- pack.mcmeta: {}\n\t---- pack.png\n\t---- data\n\t\t|\n\t\t{}".format(
-            self.title, str(self.pack_mcmeta).replace('\n', '').replace('    ', ' ').replace(' "', '"').replace(' }', '}'), 
-            ', \n\t\t'.join(map(lambda x: f'---- {x.name}', self.workspaces))
-        )
-
-    def __reversed__(self) -> None:
-        """Return an iterator over the workspaces in the Datapack in reverse order."""
-        return Datapack_Iterator(self.workspaces)[::-1]
+        return f"{self.title}: {self.workspaces}"
 
     def __str__(self) -> str:
         """Return a string representation of the Datapack."""
@@ -191,24 +180,3 @@ class Datapack:
         else:
             # Print an error message and say the original file was saved.
             print(f'{Font.ERROR}Failed to create the file "{self.title}.zip".{Font.END}', f'{Font.FINAL_INFO}The file {self.title} was not deleted.{Font.END}')
-
-
-
-class Datapack_Iterator:
-    """Iterator class for Datapack"""
-    def __init__(self, workspaces) -> None:
-        """
-        Initialize a new Datapack_Iterator object which will iterate over the workspaces in a Datapack.
-
-        :param workspaces: The list of workspaces to iterate through.
-        """
-        self._workspaces = workspaces
-        self._index = 0
-
-    def __next__(self) -> Workspace:
-        """Select the next workspace in the Datapack until the end is reached."""
-        if self._index < len(self._workspaces):
-            result = self._workspaces[self._index]
-            self._index += 1
-            return result
-        raise StopIteration

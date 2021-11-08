@@ -58,7 +58,7 @@ class TestDatapack(unittest.TestCase):
         self.assertEqual(self.example_datapack[0].name, self.example_datapack[0].name)
 
     def test_datapack___iter__(self):
-        self.assertEqual([e.name for e in self.example_datapack], ['string', 'string'])
+        self.assertEqual([e.name for e in self.example_datapack.workspaces], ['string', 'string'])
 
     def test_datapack___len__(self):
         self.assertEqual(len(self.example_datapack), 2)

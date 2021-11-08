@@ -27,10 +27,7 @@ class Workspace:
 
     def __repr__(self) -> str:
         # print the workspace with each of its arguments and arguments content.
-        return "---- {}\n\t|\n\t---- {}\n\t\t|\n\t\t{}".format(
-            self.name, ''.join(map(lambda x: x, self.content)),
-            ''.join(map(lambda x: json.dumps(self.content[x]), self.content))
-        )
+        return f"{self.name}: {self.content}"
 
     def __str__(self) -> str:
         return self.__repr__()
