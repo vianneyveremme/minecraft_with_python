@@ -11,12 +11,17 @@ class Selector:
 	random = '@e[sort=random]'
 	self = '@s'
 
-	@dataclass
-	class Player:
-		all = '@a'
-		furthest = '@a[limit=1,sort=furthest]'
-		nearest = '@p'
-		random = '@r'
+	@classmethod
+	def set(_, string: str, **kwargs) -> str:
+		for key_word in kwargs:
+			if key_word in string[2:-1]:
+				_start = string.index(key_word) + len(key_word) + 1
+				_end = next((index for index, character in enumerate(string[_start:]) if character in {'}', ',', ']'}), len(string) - 1) + _start
+				string = string[:_start] + str(kwargs[key_word]) + string[_end:]
+			else:
+				string = string + f'[{key_word}={kwargs[key_word]}]' if string[3] == '[' else string[:string.index(']')] + f',{key_word}={kwargs[key_word]}' + ']'
+	
+		return string
 
 	@dataclass
 	class Area_Effect_Cloud:
@@ -502,6 +507,13 @@ class Selector:
 		random = '@e[limit=1,sort=random,type=minecraft:pillager]'
 
 	@dataclass
+	class Player:
+		all = '@a'
+		furthest = '@a[limit=1,sort=furthest]'
+		nearest = '@p'
+		random = '@r'
+
+	@dataclass
 	class Polar_Bear:
 		all = '@e[type=minecraft:polar_bear]'
 		furthest = '@e[limit=1,sort=furthest,type=minecraft:polar_bear]'
@@ -796,15 +808,3 @@ class Selector:
 		pillager_beast = '@e[type=minecraft:ravager]'
 		# Named Binary Tag
 		on_ground = '@e[nbt={OnGround:1b}]'
-
-	@classmethod
-	def change(_, string: str, **kwargs) -> str:
-		for key_word in kwargs:
-			if key_word in string[2:-1]:
-				_start = string.index(key_word) + len(key_word) + 1
-				_end = next((index for index, character in enumerate(string[_start:]) if character in {'}', ',', ']'}), len(string) - 1) + _start
-				string = string[:_start] + str(kwargs[key_word]) + string[_end:]
-			else:
-				string = string + f'[{key_word}={kwargs[key_word]}]' if string[3] == '[' else string[:string.index(']')] + f',{key_word}={kwargs[key_word]}' + ']'
-	
-		return string
