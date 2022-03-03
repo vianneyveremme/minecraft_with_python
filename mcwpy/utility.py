@@ -94,16 +94,13 @@ def import_from_file(path: str) -> dict | list:
     with open(path, 'r') as f:
         return json.load(f) if path.endswith('.json') else f.readlines()
 
-def make_directory(name: str, path: str='') -> None:
+def make_directory(path: str=None) -> None:
     """
-    Create a directory with the given name and path.
-
-    :param name: Name of the directory to create.
-    :param path: Path to the directory to create.
+    Create directories with the given path.
     """
-    os.mkdir(os.path.join(path, name))
-    directory_name = f'{path[len(os.getcwd()) + 1:]}{os.path.sep}{Font.END}{name}{Font.OK_GREEN}'
-    print(f'{Font.OK_GREEN}Successfuly created the directory "{directory_name}".{Font.END}')
+    if path is not None:
+        os.makedirs(path)
+        print(f'{Font.OK_GREEN}Successfuly created the directory "{Font.END}{path}{Font.OK_GREEN}".{Font.END}')
 
 def remove_directory(path: str='') -> None:
     directory_name = f'{path[len(os.getcwd()) + 1:]}{os.path.sep}{Font.END}{path.split(os.path.sep)[-1]}'
