@@ -52,7 +52,7 @@ class Datapack:
         self.pack_mcmeta = pack_mcmeta if pack_mcmeta is not None else Pack_Meta(
             author=f"{os.getlogin()} using MCWPy",
             minecraft_version=Minecraft_Pack_Version.LATEST,
-            version=f'{str(date.today().isocalendar()[0])[-2:]}w{date.today().isocalendar()[1]}s{hex(int(time()))[2:]}'
+            version=f'{str(date.today().isocalendar()[0])[-2:]}w{date.today().isocalendar()[1]:0>2}s{hex(int(time()))[2:]}'
         )
 
         # Verifies that the workspaces are valid.
