@@ -8,7 +8,7 @@ from .workspace import Workspace
 from .utility import Minecraft_Pack_Version as MPV
 from .utility import Datapack_Replace_Method as DRM
 from .utility import Font, Datapack_Namespaces
-from .utility import create_file, make_directory, remove_directory
+from .utility import create_file, remove_directory
 import os
 import shutil
 
@@ -138,10 +138,6 @@ class Datapack:
             else:
                 raise FileExistsError(f'{Font.ERROR}{self.title} already exists, and you have not chosen to replace it.{Font.END}')
 
-        # Create the Datapack directory and its data directory.
-        make_directory(self.title, self.path)
-        make_directory('data', os.path.join(self.path, self.title))
-        
         # Create the pack.mcmeta file.
         create_file('pack.mcmeta', os.path.join(self.path, self.title), self.pack_mcmeta() if isinstance(self.pack_mcmeta, Pack_Meta) else self.pack_mcmeta)
 

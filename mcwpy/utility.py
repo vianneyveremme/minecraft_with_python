@@ -71,6 +71,9 @@ def create_file(name, path: str='', content: object='') -> None:
     :param path: Path to the file to create.
     :param content: Content to write to the file.
     """
+    if not os.path.exists(path):
+        make_directory(path)
+
     with open(f'{path}{os.path.sep}{name}', 'w+', encoding='utf-8') as f:
         if isinstance(content, str):
             f.write(content)
@@ -97,6 +100,8 @@ def import_from_file(path: str) -> dict | list:
 def make_directory(path: str=None) -> None:
     """
     Create directories with the given path.
+
+    :param path: Path to create.
     """
     if path is not None:
         os.makedirs(path)

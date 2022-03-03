@@ -1,5 +1,5 @@
 # -*- coding: ascii -*-
-from .utility import create_file, make_directory
+from .utility import Datapack_Namespaces, create_file
 import json
 import os
 import random
@@ -20,7 +20,7 @@ class Workspace:
         self.name = name.lower() if name is not None else f"workspace_{''.join([random.choice(string.ascii_lowercase + string.digits) for _ in range(8)])}"
         self.content = content if len(content) > 0 else {}
 
-        self.possible_arguments = {
+        Datapack_Namespaces.NAMESPACES_LIST = {
             'advancements', 'dimension', 'dimension_type', 'functions', 'item_modifiers', 
             'loot_tables', 'predicates', 'recipes', 'structures', 'tags', 'worldgen'
         }
@@ -33,28 +33,22 @@ class Workspace:
         return self.__repr__()
 
     def compile(self, path: str, as_subfolder: bool=False) -> None:
-        # Create the workspace folder.
-        make_directory(self.name, path)
-
         # Difference between "main Workspace" and "sub Workspace".
         _as_subfolder = as_subfolder if as_subfolder is not None else False
 
         # Create the workspace files.
         for key_word in self.content:
-            if not _as_subfolder:
-                make_directory(key_word, os.path.join(path, self.name))
-            
             for key in self.content[key_word]:
                 if isinstance(key, str | list):
                     create_file(
-                        f'{key}.' + ('mcfunction' if key_word == 'functions' else 'json') if key_word in self.possible_arguments else key,
+                        f'{key}.' + ('mcfunction' if key_word == 'functions' else 'json') if key_word in Datapack_Namespaces.NAMESPACES_LIST else key,
                         os.path.join(path, self.name) if _as_subfolder else os.path.join(path, self.name, key_word),
                         self.content[key_word][key] if isinstance(key, str) else '\n'.join(self.content[key_word][key])
                     )
                 elif isinstance(key, dict):
                     for sub_key in key.keys():
                         create_file(
-                            f'{sub_key}.' + ('mcfunction' if key_word == 'functions' else 'json') if key_word in self.possible_arguments else sub_key,
+                            f'{sub_key}.' + ('mcfunction' if key_word == 'functions' else 'json') if key_word in Datapack_Namespaces.NAMESPACES_LIST else sub_key,
                             os.path.join(path, self.name) if _as_subfolder else os.path.join(path, self.name, key_word),
                             key[sub_key]
                         )
@@ -65,12 +59,6 @@ class Workspace:
 
                 # Load and tick JSONs
                 def create_tick_load(filename:str):
-                    if not os.path.exists(os.path.join(path, 'minecraft', 'tags')):
-                        make_directory('tags', os.path.join(path, 'minecraft'))
-
-                    if not os.path.exists(os.path.join(path, 'minecraft', 'tags', 'functions')):
-                        make_directory('functions', os.path.join(path, 'minecraft', 'tags'))
-
                     if os.path.exists(os.path.join(path, 'minecraft', 'tags', 'functions', filename.replace('main', 'tick'))):
                         with open(os.path.join(path, 'minecraft', 'tags', 'functions', filename.replace('main', 'tick')), 'r') as f:
                             data = json.load(f)
