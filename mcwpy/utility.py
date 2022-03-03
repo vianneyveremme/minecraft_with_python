@@ -22,7 +22,7 @@ class Datapack_Replace_Method:
     KEEP = 'keep'
     REPLACE = 'replace'
 
-    def SELECT(keyword: str=None) -> str:
+    def SELECT(self, keyword: str=None) -> str:
         return keyword
 
 @dataclass
