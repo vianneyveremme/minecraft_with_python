@@ -20,10 +20,7 @@ class Workspace:
         self.name = name.lower() if name is not None else f"workspace_{''.join([random.choice(string.ascii_lowercase + string.digits) for _ in range(8)])}"
         self.content = content if len(content) > 0 else {}
 
-        Datapack_Namespaces.NAMESPACES_LIST = {
-            'advancements', 'dimension', 'dimension_type', 'functions', 'item_modifiers', 
-            'loot_tables', 'predicates', 'recipes', 'structures', 'tags', 'worldgen'
-        }
+        self.namespaces_list = [getattr(Datapack_Namespaces, namespace) for namespace in [e for e in dir(Datapack_Namespaces) if not '_' in e]]
 
     def __repr__(self) -> str:
         # print the workspace with each of its arguments and arguments content.
@@ -41,14 +38,14 @@ class Workspace:
             for key in self.content[key_word]:
                 if isinstance(key, str | list):
                     create_file(
-                        f'{key}.' + ('mcfunction' if key_word == 'functions' else 'json') if key_word in Datapack_Namespaces.NAMESPACES_LIST else key,
+                        f'{key}.' + ('mcfunction' if key_word == 'functions' else 'json') if key_word in self.namespaces_list else key,
                         os.path.join(path, self.name) if _as_subfolder else os.path.join(path, self.name, key_word),
                         self.content[key_word][key] if isinstance(key, str) else '\n'.join(self.content[key_word][key])
                     )
                 elif isinstance(key, dict):
                     for sub_key in key.keys():
                         create_file(
-                            f'{sub_key}.' + ('mcfunction' if key_word == 'functions' else 'json') if key_word in Datapack_Namespaces.NAMESPACES_LIST else sub_key,
+                            f'{sub_key}.' + ('mcfunction' if key_word == 'functions' else 'json') if key_word in self.namespaces_list else sub_key,
                             os.path.join(path, self.name) if _as_subfolder else os.path.join(path, self.name, key_word),
                             key[sub_key]
                         )

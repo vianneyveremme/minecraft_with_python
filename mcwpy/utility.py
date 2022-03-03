@@ -1,5 +1,6 @@
 # -*- coding: ascii -*-
 from dataclasses import dataclass
+from PIL import Image
 import json
 import os
 import shutil
@@ -31,11 +32,6 @@ class Datapack_Namespaces:
     STRUCTURES = 'structures'
     TAGS = 'tags'
     WORLDGEN = 'worldgen'
-
-    NAMESPACES_LIST = [
-        ADVANCEMENTS, DIMENSION, DIMENSION_TYPE, FUNCTIONS, LOOT_TABLES,
-        PREDICATES, RECIPES, STRUCTURES, TAGS, WORLDGEN
-    ]
 
 @dataclass
 class Font:
@@ -86,6 +82,20 @@ def create_file(name, path: str='', content: object='') -> None:
             raise TypeError(f'Argument "content" must be of type "str" or "list" not {type(content)}!')
         directory_name = f'{path[len(os.getcwd()) + 1:]}{os.path.sep}{Font.END}{name}{Font.OK_GREEN}'
         print(f'{Font.OK_GREEN}Successfuly created the file "{directory_name}".{Font.END}')
+
+def create_icon_from_string(string: str, path: str) -> None:
+    """
+    Create an image from a string and saves it to the given path.
+
+    :param string: "Seed" string from which the image will be generated.
+    :param path: Path where the image will be saved (must contain the image name and format)
+    """
+    colors_list = [ord(c) % 255 for c in string]
+    cl_len = len(colors_list)
+    cl_div = sum([int(v) for v in f'{cl_len:b}'])
+    img = Image.new(mode='RGB', size=(64, 64), color=(0, 0, 0))
+    img.putdata([(colors_list[(i // cl_div) % cl_len], colors_list[((i // cl_div) + 1) % cl_len], colors_list[((i // cl_div) + 2) % cl_len]) for i in range (64 * 64)])
+    img.save(path)
 
 def import_from_file(path: str) -> dict | list:
     """

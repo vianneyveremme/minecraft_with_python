@@ -1,6 +1,5 @@
 # -*- coding: ascii -*-
 from datetime import date
-from PIL import Image
 from time import time
 from typing import Any, Dict, List, Union
 from .pack_meta import Pack_Meta
@@ -8,7 +7,7 @@ from .workspace import Workspace
 from .utility import Minecraft_Pack_Version as MPV
 from .utility import Datapack_Replace_Method as DRM
 from .utility import Font, Datapack_Namespaces
-from .utility import create_file, remove_directory
+from .utility import create_file, remove_directory, create_icon_from_string
 import os
 import shutil
 
@@ -47,7 +46,7 @@ class Datapack:
         :return: None; this is a constructor.
         """
         self.title = title if title not in (None, '') else "My_Amazing_Datapack"
-        self.path = (path if path[-len(os.path.sep)] != os.path.sep else path[:-len(os.path.sep)]) if path is not None else os.getcwd()
+        self.path = path if path not in (None, '') else os.getcwd()
         self.workspaces = (workspaces if isinstance(workspaces, list) else [workspaces]) if workspaces is not None else []
         self.auto_compile = auto_compile if auto_compile is not None else False
         self.compile_as_zip = compile_as_zip if compile_as_zip is not None else False
@@ -131,26 +130,19 @@ class Datapack:
                     case DRM.REPLACE:
                         raise TypeError(f'{Font.ERROR}Replace method not implemented yet.{Font.END}')
                     case _:
-                        if self.replace_method in Datapack_Namespaces.NAMESPACES_LIST:
+                        if any(
+                            self.replace_method == getattr(Datapack_Namespaces, namespace)
+                            for namespace in [e for e in dir(Datapack_Namespaces) if not '_' in e]
+                        ):
                             raise TypeError(f'{Font.ERROR}Replace method not implemented yet.{Font.END}')
                         else:
                             raise TypeError(f'{Font.ERROR}Wrong replace method.{Font.END}')
             else:
                 raise FileExistsError(f'{Font.ERROR}{self.title} already exists, and you have not chosen to replace it.{Font.END}')
 
-        # Create the pack.mcmeta file.
+        # Create the pack.mcmeta and pack.png files.
         create_file('pack.mcmeta', os.path.join(self.path, self.title), self.pack_mcmeta() if isinstance(self.pack_mcmeta, Pack_Meta) else self.pack_mcmeta)
-
-        # Create the pack.png image.
-        colors_list = [ord(c) % 255 for c in self.title]
-        cl_len = len(colors_list)
-        cl_div = sum([int(v) for v in f'{cl_len:b}'])
-        img = Image.new(mode='RGB', size=(64, 64), color=(0, 0, 0))
-        img.putdata([(colors_list[(i // cl_div) % cl_len], colors_list[((i // cl_div) + 1) % cl_len], colors_list[((i // cl_div) + 2) % cl_len]) for i in range (64 * 64)])
-        img.save(os.path.join(self.path, self.title, 'pack.png'))
-
-        # Add the minecraft Workspace to the Datapack.
-        Workspace(name='minecraft').compile(os.path.join(self.path, self.title, 'data'))
+        create_icon_from_string(self.title, os.path.join(self.path, self.title, 'pack.png'))
 
         # Compile every workspace in the Datapack.
         for w in self.workspaces:

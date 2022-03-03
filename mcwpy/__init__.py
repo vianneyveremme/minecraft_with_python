@@ -14,7 +14,7 @@ Minecraft with Python is a Python library for creating Minecraft datapacks using
 """
 from .datapack import Datapack
 from .workspace import Workspace
-from .utility import Datapack_Replace_Method, Font, Minecraft_Pack_Version
+from .utility import Datapack_Namespaces, Datapack_Replace_Method, Font, Minecraft_Pack_Version
 from .pack_meta import Pack_Meta
 import sys
 
