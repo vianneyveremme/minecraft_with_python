@@ -6,6 +6,38 @@ import shutil
 
 
 @dataclass
+class Datapack_Replace_Method:
+    """
+    DESTROY: Removes the whole datapack before re-writing it from scratch.
+    KEEP: Doesn't touch the already-existing files, only adds new ones.
+    REPLACE: A mix between DESTROY and KEEP - updates old files and add new ones.
+    """
+    DESTROY = 'destroy'
+    KEEP = 'keep'
+    REPLACE = 'replace'
+
+    def SELECT(keyword: str=None) -> str:
+        return keyword
+
+@dataclass
+class Datapack_Namespaces:
+    ADVANCEMENTS = 'advancements'
+    DIMENSION = 'dimension'
+    DIMENSION_TYPE = 'dimension_type'
+    FUNCTIONS = 'functions'
+    LOOT_TABLES = 'loot_tables'
+    PREDICATES = 'predicates'
+    RECIPES = 'recipes'
+    STRUCTURES = 'structures'
+    TAGS = 'tags'
+    WORLDGEN = 'worldgen'
+
+    NAMESPACES_LIST = [
+        ADVANCEMENTS, DIMENSION, DIMENSION_TYPE, FUNCTIONS, LOOT_TABLES,
+        PREDICATES, RECIPES, STRUCTURES, TAGS, WORLDGEN
+    ]
+
+@dataclass
 class Font:
     BOLD = '\033[1m'
     END = '\033[0m'
@@ -26,7 +58,9 @@ class Minecraft_Pack_Version:
     v1_15 = v1_15_1 = v1_15_2 = v1_16 = v1_16_1 = 5
     v1_16_2 = v1_16_3 = v1_16_4 = v1_16_5 = 6
     v1_17 = v1_17_1 = 7
-    LATEST = v1_17_1
+    v1_18 = v_18_1 = 8
+    v1_18_2 = 9
+    LATEST = v1_18_2
 
 
 def create_file(name, path: str='', content: object='') -> None:
