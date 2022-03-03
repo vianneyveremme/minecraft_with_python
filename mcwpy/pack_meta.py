@@ -3,6 +3,8 @@ import json
 from .utility import Minecraft_Pack_Version
 
 
+__all__ = ['Pack_Meta']
+
 class Pack_Meta:
     def __init__(self, author: str=None, description: str=None, minecraft_version: object=None, **kwargs) -> None:
         """

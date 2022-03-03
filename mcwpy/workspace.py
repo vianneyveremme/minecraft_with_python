@@ -5,6 +5,9 @@ import os
 import random
 import string
 
+
+__all__ = ['Workspace']
+
 class Workspace:
     """
     Workspaces are the directories that contain the code and data files.

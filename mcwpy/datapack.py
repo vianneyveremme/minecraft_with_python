@@ -12,6 +12,8 @@ import os
 import shutil
 
 
+__all__ = ['Datapack']
+
 class Datapack:
     """
     Datapacks can be placed in the .minecraft/saves/(world)/datapacks folder of a world. Each data pack is either a sub-folder or a .zip file \
