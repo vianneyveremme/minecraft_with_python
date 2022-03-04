@@ -1,3 +1,10 @@
+# 0.4.0 (2022/03/04)
++ Added every 1.17 entity in the selector class.  
++ Improved modules imports.  
+* Fixed automatic version names.  
+* Updated Datapack generation.  
+* Updated directory and files generation.  
+
 # 0.3.1 (2021/10/20)
 * Fixed Workspaces.  
 * Updated the `README.md`.  
