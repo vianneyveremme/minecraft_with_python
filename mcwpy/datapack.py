@@ -1,6 +1,5 @@
 # -*- coding: ascii -*-
 from datetime import date
-from time import time
 from typing import Any, Dict, List, Union
 from .pack_meta import Pack_Meta
 from .workspace import Workspace
@@ -10,6 +9,7 @@ from .utility import Font, Datapack_Namespaces
 from .utility import create_file, remove_directory, create_icon_from_string
 import os
 import shutil
+import time
 
 
 __all__ = ['Datapack']
@@ -58,7 +58,7 @@ class Datapack:
         self.pack_mcmeta = pack_mcmeta if pack_mcmeta is not None else Pack_Meta(
             author=f"{os.getlogin()} using MCWPy",
             minecraft_version=MPV.LATEST,
-            version=f'{str(date.today().isocalendar()[0])[-2:]}w{date.today().isocalendar()[1]:0>2}s{hex(int(time()))[2:]}'
+            version=f'{str(date.today().isocalendar()[0])[-2:]}w{date.today().isocalendar()[1]:0>2}s{hex(int(time.time()))[2:]}'
         )
 
         # Verifies that the workspaces are valid.
@@ -156,6 +156,8 @@ class Datapack:
         # Zip the Datapack.
         if self.compile_as_zip:
             self.to_zip()
+
+        print(f'{Font.FINAL_INFO}Finished generating "{self.title}" at {Font.END}{time.strftime("%H:%M:%S")}{Font.FINAL_INFO}.{Font.END}')
 
     def pop(self, index: int=-1) -> Workspace:
         """

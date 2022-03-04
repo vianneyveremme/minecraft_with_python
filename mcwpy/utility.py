@@ -123,6 +123,11 @@ def make_directory(path: str=None) -> None:
         print(f'{Font.OK_GREEN}Successfuly created the directory "{Font.END}{path}{Font.OK_GREEN}".{Font.END}')
 
 def remove_directory(path: str='') -> None:
+    """
+    Remove a directory even if it contains files.
+
+    :param path: The path of the file to remove.
+    """
     directory_name = path.split(os.path.sep)[-1]
     if os.path.exists(path):
         try:
@@ -132,3 +137,11 @@ def remove_directory(path: str='') -> None:
             print(f'{Font.ERROR}Could not remove the directory "{Font.END}{directory_name}{Font.ERROR}".{Font.END}')
     else:
         print(f'{Font.WARN}Directory "{directory_name}".{Font.END}" does not exist!{Font.END}')
+
+def remove_file(path: str='') -> None:
+    """
+    Remove a file.
+
+    :param path: The path of the file to remove.
+    """
+    os.remove(path)
