@@ -84,7 +84,7 @@ def create_file(name, path: str='', content: object='') -> None:
         elif isinstance(content, dict):
             f.write(json.dumps(content, indent=4, sort_keys=True))
         else:
-            raise TypeError(f'Argument "content" must be of type "str" or "list" not {type(content)}!')
+            raise TypeError(f'Argument "content" must be of type "str" or "list" not {type(content)}!{Font.END}')
         directory_name = f'{path[len(os.getcwd()) + 1:]}{os.path.sep}{Font.END}{name}{Font.OK_GREEN}'
         print(f'{Font.OK_GREEN}Successfuly created the file "{directory_name}".{Font.END}')
 
@@ -127,7 +127,7 @@ def remove_directory(path: str='') -> None:
     if os.path.exists(path):
         try:
             shutil.rmtree(path)
-            print(f'{Font.FINAL_INFO}Successfuly removed the directory "{directory_name}{Font.FINAL_INFO}".')
+            print(f'{Font.FINAL_INFO}Successfuly removed the directory "{directory_name}{Font.FINAL_INFO}".{Font.END}')
         except OSError:
             print(f'{Font.ERROR}Could not remove the directory "{directory_name}{Font.ERROR}".{Font.END}')
     else:
