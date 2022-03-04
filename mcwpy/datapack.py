@@ -178,7 +178,7 @@ class Datapack:
         shutil.make_archive(self.title, 'zip', os.path.join(self.path, self.title))
         
         if os.path.exists(os.path.join(self.path, self.title + '.zip')):
-            print(f'{Font.OK_GREEN}Successfuly created the archive "{self.title}.zip".{Font.END}')
+            print(f'{Font.OK_GREEN}Successfuly created the archive "{Font.END}{self.title}.zip{Font.OK_GREEN}".{Font.END}')
 
             # Remove the original files
             if os.path.exists(os.path.join(self.path, self.title)):

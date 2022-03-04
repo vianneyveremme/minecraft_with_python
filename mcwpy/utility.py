@@ -123,12 +123,12 @@ def make_directory(path: str=None) -> None:
         print(f'{Font.OK_GREEN}Successfuly created the directory "{Font.END}{path}{Font.OK_GREEN}".{Font.END}')
 
 def remove_directory(path: str='') -> None:
-    directory_name = f'{path[len(os.getcwd()) + 1:]}{os.path.sep}{Font.END}{path.split(os.path.sep)[-1]}'
+    directory_name = path.split(os.path.sep)[-1]
     if os.path.exists(path):
         try:
             shutil.rmtree(path)
-            print(f'{Font.FINAL_INFO}Successfuly removed the directory "{directory_name}{Font.FINAL_INFO}".{Font.END}')
+            print(f'{Font.FINAL_INFO}Successfuly removed the directory "{Font.END}{directory_name}{Font.FINAL_INFO}".{Font.END}')
         except OSError:
-            print(f'{Font.ERROR}Could not remove the directory "{directory_name}{Font.ERROR}".{Font.END}')
+            print(f'{Font.ERROR}Could not remove the directory "{Font.END}{directory_name}{Font.ERROR}".{Font.END}')
     else:
         print(f'{Font.WARN}Directory "{directory_name}".{Font.END}" does not exist!{Font.END}')
