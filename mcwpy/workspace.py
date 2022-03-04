@@ -64,6 +64,7 @@ class Workspace:
                             data = json.load(f)
                             data['values'].append(f"{self.name}:{filename.removesuffix('.json')}")
                         with open(os.path.join(path, 'minecraft', 'tags', 'functions', filename.replace('main', 'tick')), 'w') as f:
+                            data['values'] = list(dict.fromkeys(data['values']))
                             f.write(json.dumps(data, indent=4))
                     else:
                         create_file(filename.replace('main', 'tick'), os.path.join(path, 'minecraft', 'tags', 'functions'), 

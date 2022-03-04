@@ -4,9 +4,7 @@ from typing import Any, Dict, List, Union
 from .pack_meta import Pack_Meta
 from .workspace import Workspace
 from .utility import Minecraft_Pack_Version as MPV
-from .utility import Datapack_Replace_Method as DRM
-from .utility import Font, Datapack_Namespaces
-from .utility import create_file, remove_directory, create_icon_from_string
+from .utility import Font, create_file, remove_directory, create_icon_from_string
 import os
 import shutil
 import time
@@ -33,7 +31,6 @@ class Datapack:
                  auto_compile: bool=None,
                  compile_as_zip: bool=None,
                  replace_existing: bool=None,
-                 replace_method: str=None
                  ) -> None:
         """
         Initialize a new Datapack object which will then generate a Minecraft Datapack.
@@ -53,7 +50,6 @@ class Datapack:
         self.auto_compile = auto_compile if auto_compile is not None else False
         self.compile_as_zip = compile_as_zip if compile_as_zip is not None else False
         self.replace_existing = replace_existing if replace_existing is not None else False
-        self.replace_method = replace_method if replace_method is not None else DRM.DESTROY
 
         self.pack_mcmeta = pack_mcmeta if pack_mcmeta is not None else Pack_Meta(
             author=f"{os.getlogin()} using MCWPy",
@@ -124,21 +120,7 @@ class Datapack:
         """
         if os.path.exists(os.path.join(self.path, self.title)):
             if self.replace_existing or input(f'{Font.WARN}{self.title} already exists, do you want to replace it? [yes/no]: {Font.END}')[0].lower() == 'y':
-                match self.replace_method:
-                    case DRM.DESTROY:
-                        remove_directory(os.path.join(self.path, self.title))
-                    case DRM.KEEP:
-                        raise TypeError(f'{Font.ERROR}Replace method not implemented yet.{Font.END}')
-                    case DRM.REPLACE:
-                        raise TypeError(f'{Font.ERROR}Replace method not implemented yet.{Font.END}')
-                    case _:
-                        if any(
-                            self.replace_method == getattr(Datapack_Namespaces, namespace)
-                            for namespace in [e for e in dir(Datapack_Namespaces) if not '_' in e]
-                        ):
-                            raise TypeError(f'{Font.ERROR}Replace method not implemented yet.{Font.END}')
-                        else:
-                            raise TypeError(f'{Font.ERROR}Wrong replace method.{Font.END}')
+                    remove_directory(os.path.join(self.path, self.title))
             else:
                 raise FileExistsError(f'{Font.ERROR}{self.title} already exists, and you have not chosen to replace it.{Font.END}')
 

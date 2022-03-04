@@ -7,23 +7,9 @@ import shutil
 
 
 __all__ = [
-    'Datapack_Replace_Method', 'Datapack_Namespaces', 'Font', 'Minecraft_Pack_Version',
+    'Datapack_Namespaces', 'Font', 'Minecraft_Pack_Version',
     'create_file', 'create_icon_from_string', 'import_from_file', 'make_directory', 'remove_directory'
 ]
-
-@dataclass
-class Datapack_Replace_Method:
-    """
-    DESTROY: Removes the whole datapack before re-writing it from scratch.
-    KEEP: Doesn't touch the already-existing files, only adds new ones.
-    REPLACE: A mix between DESTROY and KEEP - updates old files and add new ones.
-    """
-    DESTROY = 'destroy'
-    KEEP = 'keep'
-    REPLACE = 'replace'
-
-    def SELECT(self, keyword: str=None) -> str:
-        return keyword
 
 @dataclass
 class Datapack_Namespaces:
@@ -75,7 +61,7 @@ def create_file(name, path: str='', content: object='') -> None:
     if not os.path.exists(path):
         make_directory(path)
 
-    with open(f'{path}{os.path.sep}{name}', 'w+', encoding='utf-8') as f:
+    with open(os.path.join(path, name), 'w+', encoding='utf-8') as f:
         if isinstance(content, str):
             f.write(content)
         elif isinstance(content, list):
@@ -85,8 +71,9 @@ def create_file(name, path: str='', content: object='') -> None:
             f.write(json.dumps(content, indent=4, sort_keys=True))
         else:
             raise TypeError(f'{Font.ERROR}Argument "content" must be of type "str" or "list" not {type(content)}!{Font.END}')
-        directory_name = f'{path[len(os.getcwd()) + 1:]}{os.path.sep}{Font.END}{name}{Font.OK_GREEN}'
-        print(f'{Font.OK_GREEN}Successfuly created the file "{directory_name}".{Font.END}')
+
+    directory_name = f'{path[len(os.getcwd()) + 1:]}{os.path.sep}{Font.END}{name}{Font.OK_GREEN}'
+    print(f'{Font.OK_GREEN}Successfuly created the file "{directory_name}".{Font.END}')
 
 def create_icon_from_string(string: str, path: str) -> None:
     """
