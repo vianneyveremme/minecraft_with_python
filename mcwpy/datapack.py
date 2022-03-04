@@ -52,7 +52,7 @@ class Datapack:
         self.replace_existing = replace_existing if replace_existing is not None else False
 
         self.pack_mcmeta = pack_mcmeta if pack_mcmeta is not None else Pack_Meta(
-            author=f"{os.getlogin()} using MCWPy",
+            author=f"{os.getlogin().capitalize()} using MCWPy",
             minecraft_version=MPV.LATEST,
             version=f'{str(date.today().isocalendar()[0])[-2:]}w{date.today().isocalendar()[1]:0>2}s{hex(int(time.time()))[2:]}'
         )
