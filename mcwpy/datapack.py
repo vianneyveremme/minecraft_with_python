@@ -139,7 +139,7 @@ class Datapack:
         if self.compile_as_zip:
             self.to_zip()
 
-        print(f'{Font.FINAL_INFO}Finished generating "{self.title}" at {Font.END}{time.strftime("%H:%M:%S")}{Font.FINAL_INFO}.{Font.END}')
+        print(f'{Font.FINAL_INFO}Finished generating "{self.title}" at {Font.END}{time.strftime("%r")}{Font.FINAL_INFO}.{Font.END}')
 
     def pop(self, index: int=-1) -> Workspace:
         """
