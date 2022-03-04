@@ -1,13 +1,18 @@
 # -*- coding: ascii -*-
 from datetime import date
-from PIL import Image
 from time import time
+from typing import Any, Dict, List, Union
 from .pack_meta import Pack_Meta
 from .workspace import Workspace
-from .utility import create_file, Font, make_directory, remove_directory
+from .utility import Minecraft_Pack_Version as MPV
+from .utility import Datapack_Replace_Method as DRM
+from .utility import Font, Datapack_Namespaces
+from .utility import create_file, remove_directory, create_icon_from_string
 import os
 import shutil
 
+
+__all__ = ['Datapack']
 
 class Datapack:
     """
@@ -23,40 +28,38 @@ class Datapack:
     def __init__(self, 
                  title: str=None,
                  path: str=None,
-                 author: str=None,
-                 pack_mcmeta: dict=None,
-                 workspaces: list=None,
+                 pack_mcmeta: Union[Pack_Meta, Dict[str, Any]]=None,
+                 workspaces: Union[Workspace, List[Workspace]]=None,
                  auto_compile: bool=None,
                  compile_as_zip: bool=None,
                  replace_existing: bool=None,
-                 description: str=None,
-                 version: str=None
+                 replace_method: str=None
                  ) -> None:
         """
         Initialize a new Datapack object which will then generate a Minecraft Datapack.
 
         :param title: The title of the datapack.
         :param path: The path to the datapack.
-        :param author: The author of the datapack.
         :param pack_mcmeta: The metadata of the datapack.
         :param workspaces: The workspace(s) in the datapack.
         :param auto_compile: Whether or not to automatically compile the datapack.
         :param compile_as_zip: Whether or not to compile the datapack as a zip file.
         :param replace_existing: Whether or not to replace an existing datapack with the same name.
-        :param description: A short description of the datapack.
-        :param version: The version of the datapack.
         :return: None; this is a constructor.
         """
-        self.title = title if title not in [None, ''] else "My_Amazing_Datapack"
-        self.path = (path if path[-len(os.path.sep)] != os.path.sep else path[:-len(os.path.sep)]) if path is not None else os.getcwd()
-        self.author = author if author is not None else "MCWPy"
-        self.pack_mcmeta = pack_mcmeta if pack_mcmeta is not None else Pack_Meta()
+        self.title = title if title not in (None, '') else "My_Amazing_Datapack"
+        self.path = path if path not in (None, '') else os.getcwd()
         self.workspaces = (workspaces if isinstance(workspaces, list) else [workspaces]) if workspaces is not None else []
         self.auto_compile = auto_compile if auto_compile is not None else False
         self.compile_as_zip = compile_as_zip if compile_as_zip is not None else False
         self.replace_existing = replace_existing if replace_existing is not None else False
-        self.description = description if description is not None else ""
-        self.version = version if version is not None else f'{str(date.today().isocalendar()[0])[-2:]}w{date.today().isocalendar()[1]}s{int(time())}'
+        self.replace_method = replace_method if replace_method is not None else DRM.DESTROY
+
+        self.pack_mcmeta = pack_mcmeta if pack_mcmeta is not None else Pack_Meta(
+            author=f"{os.getlogin()} using MCWPy",
+            minecraft_version=MPV.LATEST,
+            version=f'{str(date.today().isocalendar()[0])[-2:]}w{date.today().isocalendar()[1]:0>2}s{hex(int(time()))[2:]}'
+        )
 
         # Verifies that the workspaces are valid.
         if not all(isinstance(w, Workspace) for w in self.workspaces):
@@ -80,34 +83,24 @@ class Datapack:
 
     def __getitem__(self, index: int) -> Workspace:
         """
-        Select the workspace at the given index.
+        Return the Workspace at the given index.
 
-        :param index: The index of the workspace to select.
-        :return: The selected workspace.
+        :param index: The index of the Workspace to return.
+        :return: The Workspace at the given index.
         """
         return self.workspaces[index]
 
-    def __iter__(self) -> iter:
-        """Return an iterator over the workspaces in the Datapack."""
-        return Datapack_Iterator(self.workspaces)
-
     def __len__(self) -> int:
-        """Return the number of workspaces in the Datapack."""
+        """Return the number of Workspaces in the Datapack."""
         return len(self.workspaces)
 
     def __repr__(self) -> str:
         """Return a string representation of the Datapack."""
-        return self.__str__()
-
-    def __reversed__(self) -> None:
-        """Return an iterator over the workspaces in the Datapack in reverse order."""
-        return Datapack_Iterator(self.workspaces)[::-1]
+        return f"{self.title}: {self.workspaces}"
 
     def __str__(self) -> str:
         """Return a string representation of the Datapack."""
-        return "---- {}\n\t|\n\t---- pack.mcmeta: {}\n\t---- pack.png\n\t---- data\n\t\t|\n\t\t{}".format(
-            self.title, self.pack_mcmeta, ', \n\t\t'.join(map(lambda x: f'---- {x.name}', self.workspaces))
-        )
+        return self.__repr__()
 
     def append(self, element: object) -> None:
         """
@@ -117,9 +110,11 @@ class Datapack:
         """
         if isinstance(element, Workspace):
             self.workspaces.append(element)
-        elif isinstance(element, list):
+        elif isinstance(element, list | Workspace):
             for e in element:
                 self.append(e)
+        else:
+            raise TypeError(f'{Font.ERROR}The "element" parameter must be a Workspace or a list of Workspaces.{Font.END}')
 
     def compile(self) -> None:
         """
@@ -129,27 +124,27 @@ class Datapack:
         """
         if os.path.exists(os.path.join(self.path, self.title)):
             if self.replace_existing or input(f'{Font.WARN}{self.title} already exists, do you want to replace it? [yes/no]: {Font.END}')[0].lower() == 'y':
-                remove_directory(os.path.join(self.path, self.title))
+                match self.replace_method:
+                    case DRM.DESTROY:
+                        remove_directory(os.path.join(self.path, self.title))
+                    case DRM.KEEP:
+                        raise TypeError(f'{Font.ERROR}Replace method not implemented yet.{Font.END}')
+                    case DRM.REPLACE:
+                        raise TypeError(f'{Font.ERROR}Replace method not implemented yet.{Font.END}')
+                    case _:
+                        if any(
+                            self.replace_method == getattr(Datapack_Namespaces, namespace)
+                            for namespace in [e for e in dir(Datapack_Namespaces) if not '_' in e]
+                        ):
+                            raise TypeError(f'{Font.ERROR}Replace method not implemented yet.{Font.END}')
+                        else:
+                            raise TypeError(f'{Font.ERROR}Wrong replace method.{Font.END}')
             else:
                 raise FileExistsError(f'{Font.ERROR}{self.title} already exists, and you have not chosen to replace it.{Font.END}')
 
-        # Create the Datapack directory and its data directory.
-        make_directory(self.title, self.path)
-        make_directory('data', os.path.join(self.path, self.title))
-        
-        # Create the pack.mcmeta file.
+        # Create the pack.mcmeta and pack.png files.
         create_file('pack.mcmeta', os.path.join(self.path, self.title), self.pack_mcmeta() if isinstance(self.pack_mcmeta, Pack_Meta) else self.pack_mcmeta)
-
-        # Create the pack.png image.
-        colors_list = [ord(c) % 255 for c in self.title]
-        cl_len = len(colors_list)
-        cl_div = sum([int(v) for v in f'{cl_len:b}'])
-        img = Image.new(mode='RGB', size=(64, 64), color=(0, 0, 0))
-        img.putdata([(colors_list[(i // cl_div) % cl_len], colors_list[((i // cl_div) + 1) % cl_len], colors_list[((i // cl_div) + 2) % cl_len]) for i in range (64 * 64)])
-        img.save(os.path.join(self.path, self.title, 'pack.png'))
-
-        # Add the minecraft Workspace to the Datapack.
-        Workspace(name='minecraft').compile(os.path.join(self.path, self.title, 'data'))
+        create_icon_from_string(self.title, os.path.join(self.path, self.title, 'pack.png'))
 
         # Compile every workspace in the Datapack.
         for w in self.workspaces:
@@ -191,24 +186,3 @@ class Datapack:
         else:
             # Print an error message and say the original file was saved.
             print(f'{Font.ERROR}Failed to create the file "{self.title}.zip".{Font.END}', f'{Font.FINAL_INFO}The file {self.title} was not deleted.{Font.END}')
-
-
-
-class Datapack_Iterator:
-    """Iterator class for Datapack"""
-    def __init__(self, workspaces) -> None:
-        """
-        Initialize a new Datapack_Iterator object which will iterate over the workspaces in a Datapack.
-
-        :param workspaces: The list of workspaces to iterate through.
-        """
-        self._workspaces = workspaces
-        self._index = 0
-
-    def __next__(self) -> Workspace:
-        """Select the next workspace in the Datapack until the end is reached."""
-        if self._index < len(self._workspaces):
-            result = self._workspaces[self._index]
-            self._index += 1
-            return result
-        raise StopIteration

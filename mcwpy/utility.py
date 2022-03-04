@@ -1,9 +1,42 @@
 # -*- coding: ascii -*-
 from dataclasses import dataclass
+from PIL import Image
 import json
 import os
 import shutil
 
+
+__all__ = [
+    'Datapack_Replace_Method', 'Datapack_Namespaces', 'Font', 'Minecraft_Pack_Version',
+    'create_file', 'create_icon_from_string', 'import_from_file', 'make_directory', 'remove_directory'
+]
+
+@dataclass
+class Datapack_Replace_Method:
+    """
+    DESTROY: Removes the whole datapack before re-writing it from scratch.
+    KEEP: Doesn't touch the already-existing files, only adds new ones.
+    REPLACE: A mix between DESTROY and KEEP - updates old files and add new ones.
+    """
+    DESTROY = 'destroy'
+    KEEP = 'keep'
+    REPLACE = 'replace'
+
+    def SELECT(self, keyword: str=None) -> str:
+        return keyword
+
+@dataclass
+class Datapack_Namespaces:
+    ADVANCEMENTS = 'advancements'
+    DIMENSION = 'dimension'
+    DIMENSION_TYPE = 'dimension_type'
+    FUNCTIONS = 'functions'
+    LOOT_TABLES = 'loot_tables'
+    PREDICATES = 'predicates'
+    RECIPES = 'recipes'
+    STRUCTURES = 'structures'
+    TAGS = 'tags'
+    WORLDGEN = 'worldgen'
 
 @dataclass
 class Font:
@@ -26,7 +59,9 @@ class Minecraft_Pack_Version:
     v1_15 = v1_15_1 = v1_15_2 = v1_16 = v1_16_1 = 5
     v1_16_2 = v1_16_3 = v1_16_4 = v1_16_5 = 6
     v1_17 = v1_17_1 = 7
-    LATEST = v1_17_1
+    v1_18 = v_18_1 = 8
+    v1_18_2 = 9
+    LATEST = v1_18_2
 
 
 def create_file(name, path: str='', content: object='') -> None:
@@ -37,7 +72,10 @@ def create_file(name, path: str='', content: object='') -> None:
     :param path: Path to the file to create.
     :param content: Content to write to the file.
     """
-    with open(f'{path}{os.path.sep}{name}', 'w+') as f:
+    if not os.path.exists(path):
+        make_directory(path)
+
+    with open(f'{path}{os.path.sep}{name}', 'w+', encoding='utf-8') as f:
         if isinstance(content, str):
             f.write(content)
         elif isinstance(content, list):
@@ -50,6 +88,20 @@ def create_file(name, path: str='', content: object='') -> None:
         directory_name = f'{path[len(os.getcwd()) + 1:]}{os.path.sep}{Font.END}{name}{Font.OK_GREEN}'
         print(f'{Font.OK_GREEN}Successfuly created the file "{directory_name}".{Font.END}')
 
+def create_icon_from_string(string: str, path: str) -> None:
+    """
+    Create an image from a string and saves it to the given path.
+
+    :param string: "Seed" string from which the image will be generated.
+    :param path: Path where the image will be saved (must contain the image name and format)
+    """
+    colors_list = [ord(c) % 255 for c in string]
+    cl_len = len(colors_list)
+    cl_div = sum([int(v) for v in f'{cl_len:b}'])
+    img = Image.new(mode='RGB', size=(64, 64), color=(0, 0, 0))
+    img.putdata([(colors_list[(i // cl_div) % cl_len], colors_list[((i // cl_div) + 1) % cl_len], colors_list[((i // cl_div) + 2) % cl_len]) for i in range (64 * 64)])
+    img.save(path)
+
 def import_from_file(path: str) -> dict | list:
     """
     Import a file from the given path.
@@ -60,16 +112,15 @@ def import_from_file(path: str) -> dict | list:
     with open(path, 'r') as f:
         return json.load(f) if path.endswith('.json') else f.readlines()
 
-def make_directory(name: str, path: str='') -> None:
+def make_directory(path: str=None) -> None:
     """
-    Create a directory with the given name and path.
+    Create directories with the given path.
 
-    :param name: Name of the directory to create.
-    :param path: Path to the directory to create.
+    :param path: Path to create.
     """
-    os.mkdir(os.path.join(path, name))
-    directory_name = f'{path[len(os.getcwd()) + 1:]}{os.path.sep}{Font.END}{name}{Font.OK_GREEN}'
-    print(f'{Font.OK_GREEN}Successfuly created the directory "{directory_name}".{Font.END}')
+    if path is not None:
+        os.makedirs(path)
+        print(f'{Font.OK_GREEN}Successfuly created the directory "{Font.END}{path}{Font.OK_GREEN}".{Font.END}')
 
 def remove_directory(path: str='') -> None:
     directory_name = f'{path[len(os.getcwd()) + 1:]}{os.path.sep}{Font.END}{path.split(os.path.sep)[-1]}'

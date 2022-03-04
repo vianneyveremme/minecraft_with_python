@@ -18,8 +18,8 @@ def version_to_tuple(version:str) -> tuple:
 # Get the latest released version of the package
 try:
     data = requests.get('https://pypi.org/pypi/mcwpy/json').json()
-except:
-    print(f'{Font.FAIL}Unable to resolve latest release version.{Font.END}')
+except Exception as e:
+    print(f'{Font.FAIL}Unable to resolve latest release version: "{e}"{Font.END}')
     quit()
 else:
     print(f'{Font.OK_GREEN}Latest released version: {data["info"]["version"]}.{Font.END}')

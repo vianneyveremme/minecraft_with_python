@@ -3,8 +3,10 @@ import json
 from .utility import Minecraft_Pack_Version
 
 
+__all__ = ['Pack_Meta']
+
 class Pack_Meta:
-    def __init__(self, author: str=None, description: str=None, minecraft_version: object=None) -> None:
+    def __init__(self, author: str=None, description: str=None, minecraft_version: object=None, **kwargs) -> None:
         """
         Create a new pack.mcmeta object to transform into a json string.
 
@@ -19,6 +21,9 @@ class Pack_Meta:
 
         self.meta['description'] = description if isinstance(description, str) and len(description) > 0 else 'A Minecraft datapack.'
         self.meta['pack_format'] = minecraft_version if isinstance(minecraft_version, Minecraft_Pack_Version) else Minecraft_Pack_Version.LATEST
+
+        for key, value in kwargs.items():
+            self.meta[key] = value
 
     def __call__(self) -> str:
         """Return the json string of the pack.mcmeta object."""

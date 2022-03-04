@@ -1,4 +1,7 @@
 # [Minecraft](https://www.minecraft.net)-[Datapacks](https://minecraft.gamepedia.com/Data_Pack)-Generator  
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/vianneyveremme/minecraft_with_python.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/vianneyveremme/minecraft_with_python/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/vianneyveremme/minecraft_with_python.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/vianneyveremme/minecraft_with_python/context:python)
+[![Downloads](https://static.pepy.tech/personalized-badge/mcwpy?period=total&units=international_system&left_color=grey&right_color=blue&left_text=Downloads)](https://pepy.tech/project/mcwpy)
 
 ## Description:  
 A new way of coding [Minecraft](https://www.minecraft.net).
@@ -26,9 +29,36 @@ import mcwpy
 # -*- coding: ascii -*-
 from mcwpy import *
 
-Datapack(workspaces=[Workspace(name='my_workspace', content={'functions':{
-    'hello_world': 'say Hello World!'
-}})])()
+workspace1 = Workspace(
+    name = 'my_workspace',
+    functions = {
+        'load': 'tellraw @a {"text":"Datapack loaded!"}',
+        'hello_world': 'say Hello World!'
+    }
+)
+
+my_datapack = Datapack(
+    title = 'My Datapack',
+    pack_mcmeta = Pack_Meta(
+        author = 'Myself',
+        description = 'My very own Minecraft datapack',
+        minecraft_version = Minecraft_Pack_Version.LATEST
+    ),
+    workspaces = [workspace1]
+)
+
+workspace2 = Workspace(
+    functions = {
+        'main': 'title @a actionbar {"text":"Hey!"}',
+        'test': [
+            'say Test',
+            'execute as @s at @s run summon pig ~ ~ ~'
+        ]
+    }
+)
+
+my_datapack.append(workspace2)
+my_datapack.compile()
 ```
 ```mcfunction
 function my_workspace:hello_world
@@ -40,3 +70,4 @@ If you want to contribute to this project, you can do so by forking it and sendi
 
 ## Credits:
 Thanks to [@theskyblockman](https://github.com/theskyblockman) for the idea of using workspaces.
+Thanks to [@Silvathor](https://github.com/SilvaUnCompte) for the idea of redesigning the workspaces.
