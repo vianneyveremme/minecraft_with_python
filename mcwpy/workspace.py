@@ -23,7 +23,7 @@ class Workspace:
         self.name = name.lower() if name is not None else f"workspace_{''.join([random.choice(string.ascii_lowercase + string.digits) for _ in range(8)])}"
         self.content = content if len(content) > 0 else {}
 
-        self.namespaces_list = [getattr(Datapack_Namespaces, namespace) for namespace in [e for e in dir(Datapack_Namespaces) if not '_' in e]]
+        self.namespaces_list = [getattr(Datapack_Namespaces, namespace) for namespace in [e for e in dir(Datapack_Namespaces) if not '__' in e]]
 
     def __repr__(self) -> str:
         # print the workspace with each of its arguments and arguments content.
