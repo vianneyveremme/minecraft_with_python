@@ -53,7 +53,7 @@ class Datapack:
 
         self.pack_mcmeta = pack_mcmeta if pack_mcmeta is not None else Pack_Meta(
             author=f"{os.getlogin().capitalize()} using MCWPy",
-            minecraft_version=MPV.LATEST,
+            minecraft_pack_version=MPV.LATEST,
             version=f'{str(date.today().isocalendar()[0])[-2:]}w{date.today().isocalendar()[1]:0>2}s{hex(int(time.time()))[2:]}'
         )
 
@@ -159,7 +159,8 @@ class Datapack:
                 raise FileExistsError(f'{Font.ERROR}{self.title}.zip already exists, and you have not chosen to replace it.{Font.END}')
 
         # Actually create the zip file.
-        shutil.make_archive(self.title, 'zip', os.path.join(self.path, self.title))
+        print(os.path.join(self.path, self.title))
+        shutil.make_archive(os.path.join(self.path, self.title), 'zip', os.path.join(self.path, self.title))
 
         if os.path.exists(os.path.join(self.path, self.title + '.zip')):
             print(f'{Font.OK_GREEN}Successfuly created the archive "{Font.END}{self.title}.zip{Font.OK_GREEN}".{Font.END}')
@@ -169,4 +170,7 @@ class Datapack:
                 remove_directory(os.path.join(self.path, self.title))
         else:
             # Print an error message and say the original file was saved.
-            print(f'{Font.ERROR}Failed to create the file "{self.title}.zip".{Font.END}', f'{Font.FINAL_INFO}The file {self.title} was not deleted.{Font.END}')
+            print(
+                f'{Font.ERROR}Failed to create the archive "{self.title}.zip".{Font.END}',
+                f'{Font.FINAL_INFO}The directory "{self.title}" was not deleted.{Font.END}'
+            )
