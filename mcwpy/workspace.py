@@ -16,7 +16,7 @@ class Workspace:
     def __init__(self, name: str=None, **content) -> None:
         """
         Initialize a workspace.
-        
+
         :param name: The name of the workspace.
         :param content: The content of the workspace.
         """

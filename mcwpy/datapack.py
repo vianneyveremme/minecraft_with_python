@@ -75,7 +75,7 @@ class Datapack:
     def __format__(self, format_specifier: str=None) -> str:
         """
         Formats the Datapack in a human-readable format depending on the format specifier.
-        
+
         :param format_specifier: The format specifier.
         :return: The formatted string.
         """
@@ -178,7 +178,7 @@ class Datapack:
 
         # Actually create the zip file.
         shutil.make_archive(self.title, 'zip', os.path.join(self.path, self.title))
-        
+
         if os.path.exists(os.path.join(self.path, self.title + '.zip')):
             print(f'{Font.OK_GREEN}Successfuly created the archive "{Font.END}{self.title}.zip{Font.OK_GREEN}".{Font.END}')
 
