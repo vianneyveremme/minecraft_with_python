@@ -1,4 +1,4 @@
-# 0.4.0 (2022/03/04)
+# 0.4.0 [Beta-2 release] (2022/03/04)
 + Added every 1.17 entity in the selector class.  
 + Improved modules imports.  
 * Fixed automatic version names.  
