@@ -159,7 +159,6 @@ class Datapack:
                 raise FileExistsError(f'{Font.ERROR}{self.title}.zip already exists, and you have not chosen to replace it.{Font.END}')
 
         # Actually create the zip file.
-        print(os.path.join(self.path, self.title))
         shutil.make_archive(os.path.join(self.path, self.title), 'zip', os.path.join(self.path, self.title))
 
         if os.path.exists(os.path.join(self.path, self.title + '.zip')):
